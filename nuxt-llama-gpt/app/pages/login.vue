@@ -1,15 +1,13 @@
 <template>
-<v-main class="d-flex justify-center align-center">
+<v-main class="d-flex justify-center align-center login-image">
   <v-container>
     <v-row class="form-container">
-      <v-col class="col-1" :class="signIn ? 'col-radius-1' : 'col-radius-2'" >
-        <v-card 
-        elevation="0"
-        color="#00000000"
-        height="600"
-        >
-          asdf
-        </v-card>
+      <v-col class="col-1 d-flex align-center justify-center" style="height: 600px;" :class="signIn ? 'col-radius-1' : 'col-radius-2'" >
+
+        <v-avatar size="300" >
+          <NuxtImg :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"></NuxtImg>
+        </v-avatar>
+
       </v-col>
       <v-col align-self="center">
         <div class="d-flex justify-center ga-3">
@@ -62,6 +60,13 @@ const switchSignUp = async() => {
 </script>
 
 <style lang="css" scoped>
+.login-image{
+  background: url('../../public/snowmountain.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size : contain; */
+  background-size : 150% 150%;
+}
 .form-container{
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 30px;
@@ -81,6 +86,6 @@ const switchSignUp = async() => {
   border-radius: 25px 30% 20% 25px;
 }
 .col-radius-2{
-  border-radius: 25px 50% 25% 25px;
+  border-radius: 25px 70% 50% 25px;
 }
 </style>
