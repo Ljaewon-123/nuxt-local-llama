@@ -4,4 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   future: { compatibilityVersion: 4 },
   modules: ['@nuxt/image', "vuetify-nuxt-module", '@nuxtjs/color-mode'],
+  runtimeConfig:{
+    dburl: process.env.DATABASE_URL,
+    dbName: process.env.DBNAME
+  }
 })
