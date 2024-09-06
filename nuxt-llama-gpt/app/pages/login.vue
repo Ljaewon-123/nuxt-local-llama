@@ -4,15 +4,17 @@
     <v-row class="form-container">
       <v-col class="col-1 d-flex align-center justify-center" style="height: 600px;" :class="signIn ? 'col-radius-1' : 'col-radius-2'" >
 
-        <v-avatar size="300" >
-          <NuxtImg :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"></NuxtImg>
-        </v-avatar>
+        <v-slide-x-transition>
+          <v-avatar size="300" >
+            <NuxtImg :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"></NuxtImg>
+          </v-avatar>
+        </v-slide-x-transition>
 
       </v-col>
       <v-col align-self="center">
         <div class="d-flex justify-center ga-3">
-          <v-btn @click="switchSignIn" rounded="xl">Sign In</v-btn>
-          <v-btn @click="switchSignUp" rounded="xl">Sign Up</v-btn>
+          <v-btn @click="switchSignIn" color="#5C7694" rounded="xl">Sign In</v-btn>
+          <v-btn @click="switchSignUp" color="#9CC6D8" rounded="xl">Sign Up</v-btn>
         </div>
         <v-slide-x-transition mode="out-in">
           <LazyLoginSignIn v-if="signIn"></LazyLoginSignIn>
@@ -42,12 +44,12 @@ const signUp = ref(false)
 const switchSignIn = async() => {
   signUp.value = false
   await nextTick() // 이걸해도 안되네 
-  setTimeout(() => signIn.value = true, 300)
+  setTimeout(() => signIn.value = true, 350)
 }
 const switchSignUp = async() => {
   signIn.value = false
   await nextTick()
-  setTimeout(() => signUp.value = true, 300)
+  setTimeout(() => signUp.value = true, 350)
 }
 
 
