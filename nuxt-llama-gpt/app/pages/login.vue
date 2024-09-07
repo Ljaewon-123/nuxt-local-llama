@@ -6,7 +6,19 @@
 
         <v-slide-x-transition>
           <v-avatar size="300" >
-            <NuxtImg :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"></NuxtImg>
+            <VImg 
+            :lazy-src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"
+            :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" 
+            >
+            <template #placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  color="grey-lighten-4"
+                  indeterminate
+                ></v-progress-circular>
+              </div>
+            </template>
+            </VImg>
           </v-avatar>
         </v-slide-x-transition>
 
