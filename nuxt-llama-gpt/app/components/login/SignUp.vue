@@ -29,7 +29,7 @@
     :rules="emptyValue"
   ></v-text-field>
 
-  <v-btn @click="signUp" size="x-large" block>
+  <v-btn @click="signUp" size="x-large" block :loading="status == 'pending'">
     Sign Up <v-icon>mdi-arrow-right-thick</v-icon>
   </v-btn>
 </v-form>
@@ -38,12 +38,13 @@
 <script setup lang="ts">
 import emptyValue from '~/constant/rules/emptyValue';
 
+const emit = defineEmits(['success'])
 const show = ref()
 const email = ref()
 const password = ref()
 const userName = ref()
 const form = ref()
-const { data, error, execute } = useLazyFetch('/api/login/signup', {
+const { data, error, execute, status } = useLazyFetch('/api/login/signup', {
   method: 'POST',
   immediate: false,
   watch: false,
@@ -59,7 +60,9 @@ const signUp = async() => {
   if(!valid) return 
 
   await execute()
+  emit('success')
 }
+
 
 
 </script>

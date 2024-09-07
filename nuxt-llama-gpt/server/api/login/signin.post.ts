@@ -16,6 +16,6 @@ export default defineEventHandler( async(event) => {
     throw Error('Password miss match')
   }
 
-  return sendRedirect(event, '/', 302)
+  return true
 
 })

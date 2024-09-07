@@ -2,7 +2,7 @@
 <v-main class="d-flex justify-center align-center login-image">
   <v-container>
     <v-row class="form-container">
-      <v-col class="col-1 d-flex align-center justify-center" style="height: 600px;" :class="signIn ? 'col-radius-1' : 'col-radius-2'" >
+      <v-col v-if="name !== 'xs'" class="col-1 d-flex align-center justify-center" style="height: 600px;" :class="signIn ? 'col-radius-1' : 'col-radius-2'" >
 
         <v-slide-x-transition>
           <v-avatar size="300" >
@@ -10,14 +10,6 @@
             :lazy-src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"
             :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" 
             >
-            <template #placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-progress-circular
-                  color="grey-lighten-4"
-                  indeterminate
-                ></v-progress-circular>
-              </div>
-            </template>
             </VImg>
           </v-avatar>
         </v-slide-x-transition>
@@ -32,7 +24,7 @@
           <LazyLoginSignIn v-if="signIn"></LazyLoginSignIn>
         </v-slide-x-transition>
         <v-slide-x-reverse-transition mode="out-in">
-          <LazyLoginSignUp v-if="signUp"></LazyLoginSignUp>
+          <LazyLoginSignUp @success="switchSignIn" v-if="signUp"></LazyLoginSignUp>
         </v-slide-x-reverse-transition>
       </v-col>
     </v-row>
@@ -45,7 +37,7 @@
 definePageMeta({
   layout: false
 })
-
+const { name } = useDisplay()
 const signIn = ref(true)
 const signUp = ref(false)
 
@@ -79,12 +71,14 @@ const switchSignUp = async() => {
   background-position: center;
   background-repeat: no-repeat;
   /* background-size : contain; */
-  background-size : 150% 150%;
+  background-size : cover;
+  
 }
 .form-container{
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 30px;
   backdrop-filter: blur(20px);
+  max-width: 1192;
 }
 .col-1{
   /* display: flex;
