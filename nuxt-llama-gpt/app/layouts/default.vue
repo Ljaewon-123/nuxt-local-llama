@@ -36,5 +36,5 @@
 </template>
 
 <script setup lang="ts">
-const drawer = ref(false)
+const drawer = ref(true)
 </script>
