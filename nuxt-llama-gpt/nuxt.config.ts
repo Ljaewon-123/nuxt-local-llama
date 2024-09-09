@@ -7,37 +7,14 @@ export default defineNuxtConfig({
     '@nuxt/image',
     "vuetify-nuxt-module",
     '@nuxtjs/color-mode',
-    '@sidebase/nuxt-auth'
   ],
-  auth: {
-    baseURL: 'http://localhost:3000/api/',
-    provider: {
-      type: 'local',
-      pages: {
-        login: '/login'
+  nitro: {
+    storage: {
+      redis: {
+        driver: "redis",
+        url: "redis://localhost:6379",
       },
-      endpoints: {
-        signIn: { path: '/login/signin', method: 'post' },
-        signUp: { path: '/login/signup', method: 'post' },
-        // signOut: { path: '/logout', method: 'post' },
-        getSession: { path: '/auth/session', method: 'get' },
-      }
-      // sessionDataType: {
-      //   id: 'string | number',
-      //   email: 'string',
-      //   userName: 'string',
-      //   password: 'string'
-      // }
     },
-    isEnabled: true,
-    disableServerSideAuth: false,
-    originEnvKey: 'AUTH_ORIGIN',
-    sessionRefresh: {
-      enablePeriodically: true,
-      enableOnWindowFocus: true,
-    },
-    globalAppMiddleware: true
-    // provider: { /* your provider config */ },
   },
   runtimeConfig:{
     dburl: process.env.DATABASE_URL,
