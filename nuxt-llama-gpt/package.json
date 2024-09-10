@@ -14,11 +14,13 @@
     "crypto-js": "^4.2.0",
     "mongoose": "^8.6.1",
     "nuxt": "^3.13.0",
+    "pinia": "^2.2.2",
     "vue": "latest"
   },
   "devDependencies": {
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/color-mode": "^3.4.4",
+    "@pinia/nuxt": "^0.5.4",
     "vuetify-nuxt-module": "^0.18.2"
   }
 }

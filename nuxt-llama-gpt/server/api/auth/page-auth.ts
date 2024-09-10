@@ -14,7 +14,10 @@ export default defineEventHandler( async event => {
   const verification = await PageAuth.verification(session.id)
 
   if (!verification) {
-    throw new Error('Page Rejected');
+    throw createError({
+      statusCode: 498,
+      message: 'Page Rejected'
+    })
   }
 
   // 갱신

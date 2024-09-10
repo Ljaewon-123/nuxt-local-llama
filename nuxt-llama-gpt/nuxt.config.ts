@@ -7,7 +7,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
     "vuetify-nuxt-module",
     '@nuxtjs/color-mode',
+    "@pinia/nuxt",
   ],
+  pinia: {
+    storesDirs: ['./app/stores/**','./stores/**'],
+  },
   nitro: {
     storage: {
       redis: {
