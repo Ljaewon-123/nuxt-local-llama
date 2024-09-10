@@ -6,7 +6,7 @@ class="d-flex align-center pa-3">
   <v-icon>mdi-paperclip</v-icon>
   <v-textarea
     flat
-    placeholder="Call llama message"
+    placeholder="Call the llama"
     variant="solo"
     row-height="15"
     rows="1"

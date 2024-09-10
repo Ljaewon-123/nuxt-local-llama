@@ -24,6 +24,16 @@ export default defineEventHandler( async(event) => {
     throw Error('Password miss match')
   }
 
+  const session = await useSession(event, {
+    password: "80d42cfb-1cd2-462c-8f17-e3237d9027e9",
+  });
+  await session.update({
+    email: user.email,
+    userName: user.userName
+  });
+  const redis = useRedis()
+  await redis.setItem(session.id ?? 'null', session, { ttl: 60 * 15 })
+
   return true
 
 })
