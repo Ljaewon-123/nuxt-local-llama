@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
     "mongoose": "^8.6.1",
     "nuxt": "^3.13.0",
     "vue": "latest"

@@ -30,7 +30,10 @@
 
 <script setup lang="ts">
 import emptyValue from '~/constant/rules/emptyValue';
+import CryptoJS from "crypto-js";
 
+const config = useRuntimeConfig()
+const key = CryptoJS.SHA256(config.public.encryptionKey).toString(CryptoJS.enc.Hex)
 const show = ref(false)
 const email = ref()
 const password = ref()
@@ -41,13 +44,15 @@ const { data, error, execute, status } = useLazyFetch('/api/login/signin', {
   watch: false,
   body: {
     email: email,
-    password: password
+    password: CryptoJS.AES.encrypt(password.value, key).toString() 
   }
 })
 
 const signIn = async() => {
   const { valid } = await form.value.validate()
   if(!valid) return 'rules miss match'
+
+  
 
   await execute()
 

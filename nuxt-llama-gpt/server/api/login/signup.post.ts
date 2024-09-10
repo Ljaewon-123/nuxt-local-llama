@@ -3,7 +3,6 @@ import UsersModel from "~~/server/models/Users"
 export default defineEventHandler( async(event) => {
 
   const body = await readBody(event)
-
   try{
     const users = new UsersModel()
     users.email = body.email
