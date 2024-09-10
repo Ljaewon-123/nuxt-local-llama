@@ -1,8 +1,8 @@
 export default defineNuxtPlugin(() => {
-  addRouteMiddleware('global-auth', () => {
+  addRouteMiddleware('global-auth', async() => {
     console.log('global auth plugins middleware only client')
 
-    const { data } = useFetch("/api/auth/page-auth",{
+    await useFetch("/api/auth/page-auth",{
       server: false,
     })
 
