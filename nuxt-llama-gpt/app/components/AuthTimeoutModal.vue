@@ -1,15 +1,16 @@
 <template>
   <v-card
   max-width="400"
+  rounded="lg"
   prepend-icon="mdi-lock-open-alert-outline"
-  text="Your application will relaunch automatically after the update is complete."
-  title="Update in progress"
+  :title="title"
+  :text="text"
 >
   <template #actions>
     <v-btn
-      class="ms-auto"
       text="Ok"
-      @click="dialog = false"
+      variant="outlined"
+      @click="goLoginPage(), dialog = false"
     ></v-btn>
   </template>
 </v-card>
@@ -17,4 +18,8 @@
 
 <script setup lang="ts">
 const dialog = defineModel({ default: false })
+const { title, text } = usePageAuth()
+const goLoginPage = () => {
+  navigateTo('/login')
+}
 </script>

@@ -9,6 +9,32 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     "@pinia/nuxt",
   ],
+  vuetify:{
+    vuetifyOptions:{
+      theme:{
+        themes:{
+          light: {
+            dark:false,
+            colors:{
+              confirmBtn: "#1a1a1a"
+            },
+            variables:{
+              "confirm-btn": "#f123"
+            }
+          },
+          dark: {
+            dark: true,
+            colors:{
+              confirmBtn: "#ffffff"
+            },
+            variables:{
+              "confirm-btn": "#f123"
+            }
+          },
+        }
+      }
+    }
+  },
   pinia: {
     storesDirs: ['./app/stores/**','./stores/**'],
   },
