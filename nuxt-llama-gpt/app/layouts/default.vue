@@ -7,6 +7,7 @@
       </v-app-bar-nav-icon>
       <v-app-bar-title>
         llama-GPT
+        <v-btn @click="logout" color="confirmBtn" variant="flat">test log out</v-btn>
       </v-app-bar-title>
     </v-app-bar>
 
@@ -37,4 +38,14 @@
 
 <script setup lang="ts">
 const drawer = ref(true)
+
+const logout = async() => {
+  try {
+    await $fetch('/api/logout')
+    navigateTo('/login')
+  } catch (error) {
+    console.error(error, 'server error')
+  }
+}
+
 </script>
