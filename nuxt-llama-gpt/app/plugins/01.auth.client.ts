@@ -1,6 +1,7 @@
 export default defineNuxtPlugin(() => {
-  addRouteMiddleware('global-auth', async() => {
+  addRouteMiddleware('global-auth', async(to, form) => {
     console.log('global auth plugins middleware only client')
+    if(to.name == 'login') return
     
     const { dialog } = storeToRefs(usePageAuth())
 

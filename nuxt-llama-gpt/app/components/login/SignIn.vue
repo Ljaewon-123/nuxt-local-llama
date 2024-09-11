@@ -32,11 +32,12 @@
 import emptyValue from '~/constant/rules/emptyValue';
 import CryptoJS from "crypto-js";
 
+const { encryptStr } = useCrypto()
 const config = useRuntimeConfig()
-const key = CryptoJS.SHA256(config.public.encryptionKey).toString(CryptoJS.enc.Hex)
 const show = ref(false)
 const email = ref()
 const password = ref()
+const encrypt = computed(() => encryptStr(password.value))
 const form = ref()
 const { data, error, execute, status } = useLazyFetch('/api/login/signin', {
   method: 'POST',
@@ -44,7 +45,7 @@ const { data, error, execute, status } = useLazyFetch('/api/login/signin', {
   watch: false,
   body: {
     email: email,
-    password: CryptoJS.AES.encrypt(password.value, key).toString() 
+    password: encrypt
   }
 })
 
