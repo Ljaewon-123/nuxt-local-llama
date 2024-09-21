@@ -1,6 +1,7 @@
 <template>
 <v-form ref="form">
   <h1 class="text-center my-4">Create Account</h1>
+  <p class="text-error">{{ error?.data.message }}</p>
   <v-text-field
     v-model="email"
     rounded="lg"
@@ -37,11 +38,8 @@
 
 <script setup lang="ts">
 import emptyValue from '~/constant/rules/emptyValue';
-import CryptoJS from "crypto-js";
 
 const { encryptStr } = useCrypto()
-const config = useRuntimeConfig()
-const key = CryptoJS.SHA256(config.public.encryptionKey).toString(CryptoJS.enc.Hex)
 const emit = defineEmits(['success'])
 const show = ref()
 const email = ref()
@@ -65,7 +63,8 @@ const signUp = async() => {
   if(!valid) return 
 
   await execute()
-  if(!error.value) emit('success')
+  if(!error.value) return emit('success')
+
 }
 
 

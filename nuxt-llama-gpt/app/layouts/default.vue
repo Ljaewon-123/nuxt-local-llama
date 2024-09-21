@@ -1,14 +1,43 @@
 <template>
 <div>
   <div >
-    <v-app-bar :order="1">
+    <v-app-bar :order="1" color="background">
       <v-app-bar-nav-icon v-if="!drawer" @click="drawer = !drawer">
         <v-icon>mdi-animation-outline</v-icon>
       </v-app-bar-nav-icon>
       <v-app-bar-title>
         llama-GPT
-        <v-btn @click="logout" color="confirmBtn" variant="flat">test log out</v-btn>
       </v-app-bar-title>
+
+      <template #append>
+        <v-btn icon="mdi-magnify"></v-btn>
+
+        <v-btn icon="mdi-dots-vertical"></v-btn>
+
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-cog-outline"></v-btn>
+          </template>
+          <v-card width="250" rounded="lg">
+            <v-list>
+              <v-list-item
+                v-for="item, i in configItems"
+                :key="i"
+                :value="item"
+                color="primary"
+                rounded="shaped"
+                @click="item?.click"
+              >
+                <template #prepend>
+                  <v-icon :icon="item.icon"></v-icon>
+                </template>
+
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-menu>
+      </template>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -47,5 +76,12 @@ const logout = async() => {
     console.error(error, 'server error')
   }
 }
+
+const configItems = [
+  { text: 'My Llama', icon: 'mdi-account-cog' },
+  { text: 'Config', icon: 'mdi-cogs' },
+  { text: 'Logout', icon: 'mdi-logout', click: logout },
+]
+
 
 </script>

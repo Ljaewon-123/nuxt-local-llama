@@ -1,7 +1,7 @@
 <template>
 <v-form ref="form">
-  {{ error }}
   <h1 class="text-center my-4">Sign In</h1>
+  <p class="text-error">{{ error?.data.message }}</p>
   <v-text-field
     v-model="email"
     rounded="lg"
