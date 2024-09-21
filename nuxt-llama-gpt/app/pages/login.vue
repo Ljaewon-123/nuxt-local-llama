@@ -28,6 +28,8 @@
         </v-slide-x-reverse-transition>
       </v-col>
     </v-row>
+    <!-- <br>
+    <Connection /> -->
   </v-container>
 </v-main>
 </template>

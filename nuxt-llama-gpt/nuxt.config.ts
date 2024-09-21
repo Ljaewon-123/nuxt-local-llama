@@ -39,11 +39,14 @@ export default defineNuxtConfig({
     storesDirs: ['./app/stores/**','./stores/**'],
   },
   nitro: {
+    experimental: {
+      websocket: true
+    },
     storage: {
-      redis: {
-        driver: "redis",
-        url: "redis://localhost:6379",
-      },
+      // redis: {
+      //   driver: "redis",
+      //   url: "redis://localhost:6379",
+      // },
     },
   },
   runtimeConfig:{
