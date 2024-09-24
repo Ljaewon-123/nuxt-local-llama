@@ -16,19 +16,23 @@ export default defineNuxtConfig({
           light: {
             dark:false,
             colors:{
-              confirmBtn: "#1a1a1a"
+              confirmBtn: "#1a1a1a",
+              blankColor: "#ffffff00"
             },
             variables:{
-              "confirm-btn": "#f123"
+              "confirm-btn": "#f123",
+              "blank-color": "#ffffff00"
             }
           },
           dark: {
             dark: true,
             colors:{
-              confirmBtn: "#ffffff"
+              confirmBtn: "#ffffff",
+              blankColor: "#ffffff00"
             },
             variables:{
-              "confirm-btn": "#f123"
+              "confirm-btn": "#f123",
+              "blank-color": "#ffffff00"
             }
           },
         }

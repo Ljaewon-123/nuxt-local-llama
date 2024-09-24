@@ -1,5 +1,5 @@
 <template>
-  <v-card
+<v-card
   max-width="400"
   rounded="lg"
   prepend-icon="mdi-lock-open-alert-outline"

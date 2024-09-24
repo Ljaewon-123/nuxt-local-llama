@@ -5,6 +5,7 @@
       <v-app-bar-nav-icon v-if="!drawer" @click="drawer = !drawer">
         <v-icon>mdi-animation-outline</v-icon>
       </v-app-bar-nav-icon>
+
       <v-app-bar-title>
         llama-GPT
       </v-app-bar-title>
@@ -62,6 +63,18 @@
       <slot></slot>
     </v-container>
   </v-main>
+
+  <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
+    <v-container fluid >
+      <v-row justify="center">
+        <v-col cols="8">
+          <CallLlama />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-bottom-navigation>
+
+
 </div>
 </template>
 

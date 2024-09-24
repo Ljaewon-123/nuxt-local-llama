@@ -1,15 +1,40 @@
 <template>
 <div class="position-relative " style="min-height: 88vh;">
 
-  <v-row>asd</v-row>
+  <div class="chat-area w-100 px-16 py-8" >
+    <v-row justify="start">
+      <v-avatar>
+        <v-img
+          alt="Llama"
+          src="/two-llama.svg"
+        ></v-img>
+      </v-avatar>
+      <v-col cols="10">
+        <div>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore libero eius, et nostrum officiis consequuntur, magni atque animi excepturi saepe suscipit accusamus, beatae sit recusandae officia nemo molestiae impedit necessitatibus?
+        </div>
 
-  <div class="position-absolute w-100" style="bottom: 0;">
-    <v-row justify="center">
-      <v-col cols="8">
-        <CallLlama />
+        <div>
+          some options area
+        </div>
       </v-col>
     </v-row>
+
+    <v-row justify="end">
+      <v-col cols="7">
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. In necessitatibus sapiente deserunt asperiores error facilis doloribus corporis nihil, quae amet laborum quia fuga. Sapiente modi, vero nulla fugiat nihil deserunt?
+        </div>
+      </v-col>
+      <v-avatar>
+        <v-img
+          alt="Llama"
+          src="/two-llama.svg"
+        ></v-img>
+      </v-avatar>
+    </v-row>
   </div>
+
 </div>
 </template>
 
