@@ -10,6 +10,9 @@
             :lazy-src="`${signIn ? 'signin' : 'signup'}-llama.svg`" height="300" width="300"
             :src="`${signIn ? 'signin' : 'signup'}-llama.svg`" 
             >
+            <template #placeholder>
+              <LazyLoading />
+            </template>
             </VImg>
           </v-avatar>
         </v-slide-x-transition>

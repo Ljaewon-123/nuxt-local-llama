@@ -1,0 +1,27 @@
+<template>
+<v-row justify="end">
+  <v-col cols="7">
+    <v-card class="pa-4" rounded="lg">
+      <div>
+        {{ props.saying }}
+      </div>
+    </v-card>
+  </v-col>
+  <v-avatar>
+    <v-img
+      alt="Llama"
+      src="public/two-llama.svg"
+    >
+      <template #placeholder>
+        <LazyLoading />
+      </template>
+    </v-img>
+  </v-avatar>
+</v-row>
+</template>
+
+<script setup lang="ts">
+const props = defineProps({
+  saying: String
+})
+</script>

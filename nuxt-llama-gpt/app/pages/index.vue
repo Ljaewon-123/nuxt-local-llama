@@ -1,46 +1,49 @@
 <template>
 <div class="position-relative " style="min-height: 88vh;">
 
-  <div class="chat-area w-100 px-16 py-8" >
-    <v-row justify="start">
-      <v-avatar>
-        <v-img
-          alt="Llama"
-          src="/two-llama.svg"
-        ></v-img>
-      </v-avatar>
-      <v-col cols="10">
-        <div>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore libero eius, et nostrum officiis consequuntur, magni atque animi excepturi saepe suscipit accusamus, beatae sit recusandae officia nemo molestiae impedit necessitatibus?
-        </div>
+  <div class="chat-area px-16 py-8" >
+    <ChatLlama />
 
-        <div>
-          some options area
-        </div>
-      </v-col>
-    </v-row>
-
-    <v-row justify="end">
-      <v-col cols="7">
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In necessitatibus sapiente deserunt asperiores error facilis doloribus corporis nihil, quae amet laborum quia fuga. Sapiente modi, vero nulla fugiat nihil deserunt?
-        </div>
-      </v-col>
-      <v-avatar>
-        <v-img
-          alt="Llama"
-          src="/two-llama.svg"
-        ></v-img>
-      </v-avatar>
-    </v-row>
+    <ChatClient />
+    <div v-for="component in contentList">
+      <component :is="component.component" :saying="component.saying" ></component>
+    </div>
   </div>
+
+  <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
+    <v-row justify="center">
+      <v-col cols="8">
+        <CallLlama @sendMessage="callLlama"/>
+      </v-col>
+    </v-row>
+  </v-bottom-navigation>
 
 </div>
 </template>
 
-<!-- 역할이 딱히;;;??? 이게 푸터라고 표시하는거 외에는 없는거 같은데 -->
-<!-- <v-footer class="ma-3" color="rgb(var(--v-theme-background))"> -->
-<!-- </v-footer> -->
+<script setup lang="ts">
+import type { DefineComponent } from 'vue';
+
+type ChatArea = { component: DefineComponent<{}, {}, any>, saying: string }
+
+const ChatClient = markRaw(defineAsyncComponent(() =>
+  import('~/components/chat/Client.vue')
+))
+const ChatLlama = markRaw(defineAsyncComponent(() =>
+  import('~/components/chat/Llama.vue')
+))
+const contentList = ref<ChatArea[]>([])
+
+// 클라이언트가 입력해서 나오면 chatclient 아니면 chatllama
+const callLlama = (say: string) => {
+  console.log(say)
+  contentList.value.push({
+    component: ChatClient,
+    saying: say
+  })
+}
+</script>
+
 <style lang="css" scoped>
 /* .test{
   background-color: rgb(var(--v-theme-background));
