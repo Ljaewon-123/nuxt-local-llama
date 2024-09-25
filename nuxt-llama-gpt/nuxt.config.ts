@@ -47,10 +47,10 @@ export default defineNuxtConfig({
       websocket: true
     },
     storage: {
-      // redis: {
-      //   driver: "redis",
-      //   url: "redis://localhost:6379",
-      // },
+      redis: {
+        driver: "redis",
+        url: "redis://localhost:6379",
+      },
     },
   },
   runtimeConfig:{

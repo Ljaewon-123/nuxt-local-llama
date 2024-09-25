@@ -11,8 +11,9 @@ export class PageAuth {
     return await this.redis.getItem(sessionId)
   }
   
+  // test용으로 15분정도 설정 
   async refreshSession(session: { id: string , data: Object }){
-    await this.redis.setItem(session.id, session, { ttl: 60 * 15 })
+    await this.redis.setItem(session.id, session, { ttl: 60 * 15 }) 
   }
 
 }

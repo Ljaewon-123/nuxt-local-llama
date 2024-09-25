@@ -10,7 +10,8 @@ export default defineNuxtPlugin(() => {
     })
     
     console.log(error.value?.data, '@@@@@@@@@@@@@')
-    if(error.value) dialog.value = true
+    // 워닝과 스크롤이벤트 에러 ( 아마 vue인스턴스가 제대로 안착하기 전에 작동해서 그런거같음 )
+    if(error.value) setTimeout(() => dialog.value = true, 500)
 
   }, { global: true })
 })

@@ -11,6 +11,7 @@ export default defineEventHandler( async event => {
   if (!verification) {
     throw createError({
       statusCode: 498,
+      statusMessage: 'Page Rejected',
       message: 'Page Rejected'
     })
   }

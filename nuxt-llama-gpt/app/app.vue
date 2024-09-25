@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { usePageAuth } from './stores/pageAuth';
 
 type Theme = "dark" | "light";
 const colorMode = useColorMode()
