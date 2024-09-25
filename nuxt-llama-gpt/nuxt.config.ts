@@ -59,5 +59,5 @@ export default defineNuxtConfig({
     public:{
       encryptionKey: process.env.ENCRYPTION_KEY
     }
-  }
+  },
 })

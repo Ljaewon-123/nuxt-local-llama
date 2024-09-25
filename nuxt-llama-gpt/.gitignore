@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+./capybarahermes-2.5-mistral-7b.Q2_K.gguf
+capybarahermes-2.5-mistral-7b.Q2_K.gguf
