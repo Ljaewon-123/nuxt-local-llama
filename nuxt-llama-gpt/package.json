@@ -15,7 +15,7 @@
     "crypto-js": "^4.2.0",
     "mongoose": "^8.6.1",
     "node-llama-cpp": "^3.0.1",
-    "nuxt": "^3.13.0",
+    "nuxt": "^3.13.2",
     "pinia": "^2.2.2",
     "socket.io": "^4.8.0",
     "socket.io-client": "^4.8.0",
