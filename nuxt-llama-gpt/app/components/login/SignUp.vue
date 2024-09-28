@@ -28,6 +28,7 @@
     label="User name"
     variant="solo-filled"
     :rules="emptyValue"
+    @keyup.enter.preven="signUp"
   ></v-text-field>
 
   <v-btn @click="signUp" size="x-large" block :loading="status == 'pending'">

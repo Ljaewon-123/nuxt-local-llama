@@ -57,7 +57,8 @@ export default defineNuxtConfig({
     dburl: process.env.DATABASE_URL,
     dbName: process.env.DBNAME,
     public:{
-      encryptionKey: process.env.ENCRYPTION_KEY
+      encryptionKey: process.env.ENCRYPTION_KEY,
+      rootPath: process.cwd()
     }
   },
 })

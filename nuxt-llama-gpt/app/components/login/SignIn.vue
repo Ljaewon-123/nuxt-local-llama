@@ -20,6 +20,7 @@
     :type="show ? 'text' : 'password'"
     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
     @click:append="show = !show"
+    @keyup.enter.preven="signIn"
   ></v-text-field>
 
   <v-btn @click="signIn" size="x-large" block :loading="status == 'pending'">
