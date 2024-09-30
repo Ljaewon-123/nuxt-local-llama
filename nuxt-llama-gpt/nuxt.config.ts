@@ -56,9 +56,10 @@ export default defineNuxtConfig({
   runtimeConfig:{
     dburl: process.env.DATABASE_URL,
     dbName: process.env.DBNAME,
+    llamaName: "mistral-7b-instruct-v0.2.Q5_K_M",
     public:{
       encryptionKey: process.env.ENCRYPTION_KEY,
-      rootPath: process.cwd()
+      rootPath: process.cwd(),
     }
   },
 })

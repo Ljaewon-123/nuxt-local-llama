@@ -51,7 +51,6 @@ onMounted(() => {
 
 const unwatch = watchEffect(() => {
   if(cookieTheme.value == undefined){
-    console.log('um')
     return cookieTheme.value = 'dark'
   }
 })

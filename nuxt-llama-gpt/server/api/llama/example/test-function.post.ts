@@ -5,11 +5,13 @@ import {getLlama, LlamaChatSession, defineChatSessionFunction} from "node-llama-
 // 내 대답에 따른 정답을 확정시킬수있다. 
 export default defineEventHandler(async(event) => {
 
-  const rootPath = useRuntimeConfig().public.rootPath
+  const config = useRuntimeConfig()
+  const rootPath = config.public.rootPath
+  const llamaName = config.llamaName
 
   const llama = await getLlama();
   const model = await llama.loadModel({
-    modelPath: path.join(rootPath, "models", "mistral-7b-instruct-v0.2.Q5_K_M.gguf")
+    modelPath: path.join(rootPath, "models", llamaName + ".gguf")
   });
   const context = await model.createContext();
   const session = new LlamaChatSession({
