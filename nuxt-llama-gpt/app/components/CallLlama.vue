@@ -16,7 +16,7 @@ class="d-flex align-center pa-3">
     hide-details
     no-resize
     density="compact"
-    @keydown.enter.prevent="emitInput"
+    @keydown="handleKeydown"
   >
     <template #append-inner>
       <v-avatar 
@@ -40,5 +40,19 @@ const emitInput = () => {
   console.log('Test method called:', userInput.value)
   emit('sendMessage', userInput.value)
   userInput.value = ''
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    // Shift 없이 Enter를 누른 경우
+    event.preventDefault() // 기본 개행 동작 방지
+    emitInput() // 메서드 호출
+    return
+  }
+  // else if (event.key === 'Enter' && event.shiftKey) {
+  //   // Shift + Enter인 경우 줄바꿈 문자 추가
+  //   event.preventDefault() // 기본 개행 방지
+  //   userInput.value += '\n' // 개행 문자 추가
+  // }
 }
 </script>

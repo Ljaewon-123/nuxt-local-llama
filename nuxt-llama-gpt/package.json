@@ -25,6 +25,7 @@
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/color-mode": "^3.4.4",
     "@pinia/nuxt": "^0.5.4",
+    "@vueuse/nuxt": "^11.1.0",
     "vuetify-nuxt-module": "^0.18.2"
   }
 }

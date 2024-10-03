@@ -2,7 +2,7 @@
 <v-row justify="end">
   <v-col cols="7">
     <v-card class="pa-4" rounded="lg">
-      <div>
+      <div class="pre-line-text">
         {{ props.saying }}
       </div>
     </v-card>
@@ -25,3 +25,9 @@ const props = defineProps({
   saying: String
 })
 </script>
+
+<style lang="css" scoped>
+.pre-line-text {
+  white-space: pre-line;
+}
+</style>

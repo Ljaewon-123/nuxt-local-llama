@@ -58,7 +58,7 @@
       </v-list> -->
     </v-navigation-drawer>
   </div>
-  <v-main class="d-flex align-center justify-center position-relative">
+  <v-main class="d-flex align-center justify-center position-relative" >
     <v-container fluid >
       <slot></slot>
     </v-container>

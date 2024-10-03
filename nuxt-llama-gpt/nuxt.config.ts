@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "vuetify-nuxt-module",
     '@nuxtjs/color-mode',
     "@pinia/nuxt",
+    "@vueuse/nuxt",
   ],
   vuetify:{
     vuetifyOptions:{

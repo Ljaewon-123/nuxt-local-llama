@@ -1,10 +1,9 @@
 <template>
-<div class="position-relative " style="min-height: 88vh;">
+<div class="position-relative ">
 
-  <div class="chat-area px-16 py-8" >
+  <div id="chat-area" ref="chatAreaEl" class="px-16 py-8" >
     <ChatLlama />
-
-    <ChatClient />
+    <!-- <ChatClient /> -->
     <div v-for="component in contentList">
       <component :is="component.component" :saying="component.saying" ></component>
     </div>
@@ -24,6 +23,10 @@
 <script setup lang="ts">
 import type { DefineComponent } from 'vue';
 
+const goTo = useGoTo()
+const chatAreaEl = ref()
+const { height } = useElementSize(chatAreaEl)
+
 type ChatArea = { component: DefineComponent<{}, {}, any>, saying: string }
 
 const ChatClient = markRaw(defineAsyncComponent(() =>
@@ -35,12 +38,15 @@ const ChatLlama = markRaw(defineAsyncComponent(() =>
 const contentList = ref<ChatArea[]>([])
 
 // 클라이언트가 입력해서 나오면 chatclient 아니면 chatllama
-const callLlama = (say: string) => {
+const callLlama = async(say: string) => {
   console.log(say)
   contentList.value.push({
     component: ChatClient,
     saying: say
   })
+
+  await delay(1000)
+  goTo(height.value)
 }
 </script>
 
