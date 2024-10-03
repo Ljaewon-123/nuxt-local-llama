@@ -27,7 +27,7 @@ const goTo = useGoTo()
 const chatAreaEl = ref()
 const { height } = useElementSize(chatAreaEl)
 
-type ChatArea = { component: DefineComponent<{}, {}, any>, saying: string }
+type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
 
 const ChatClient = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Client.vue')
@@ -37,12 +37,17 @@ const ChatLlama = markRaw(defineAsyncComponent(() =>
 ))
 const contentList = ref<ChatArea[]>([])
 
-// 클라이언트가 입력해서 나오면 chatclient 아니면 chatllama
+// 클라입력 직후에 바로 ai 답변대기 표시를 하고 그 다음에 socket으로 답변을 받는다.
 const callLlama = async(say: string) => {
-  console.log(say)
   contentList.value.push({
     component: ChatClient,
     saying: say
+  })
+
+  await delay(100) // 혹시 모르니 딜레이 살짝줌 
+
+  contentList.value.push({
+    component: ChatLlama,
   })
 
   await delay(1000)

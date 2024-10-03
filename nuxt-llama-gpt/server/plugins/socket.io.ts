@@ -13,11 +13,17 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
   io.on("connection", (socket) => {
     // your code...
 
+    socket.on("ping", (cb) => {
+      cb("pong");
+    });
+
     socket.on('test', mess => {
-      console.log(mess)
+      console.log(mess,' test socket io in server')
     })
 
-    // socket.emit('test', 'what')
+    socket.on('message', mess => {
+      socket.emit("llama", mess)
+    })
 
 
     console.log('connection socket io')

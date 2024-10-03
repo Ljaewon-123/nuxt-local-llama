@@ -10,9 +10,9 @@
       </template>
     </v-img>
   </v-avatar>
-  <v-col cols="10">
-    <div>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore libero eius, et nostrum officiis consequuntur, magni atque animi excepturi saepe suscipit accusamus, beatae sit recusandae officia nemo molestiae impedit necessitatibus?
+  <v-col cols="9">
+    <div class="answer">
+      {{ answer }}
     </div>
 
     <div>
@@ -21,3 +21,15 @@
   </v-col>
 </v-row>
 </template>
+
+<script setup lang="ts">
+const { $socket }  = useNuxtApp();
+
+const answer = ref()
+
+onMounted(() => {
+  $socket.on('chat', mess => {
+    answer.value += mess 
+  })
+})
+</script>
