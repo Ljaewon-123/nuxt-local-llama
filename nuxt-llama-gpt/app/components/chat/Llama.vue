@@ -11,6 +11,9 @@
     </v-img>
   </v-avatar>
   <v-col cols="9">
+    <div v-if="loading" >
+      <LazyLoading :justify="'start'" />
+    </div>
     <div class="answer">
       {{ answer }}
     </div>
@@ -25,10 +28,12 @@
 <script setup lang="ts">
 const { $socket }  = useNuxtApp();
 
-const answer = ref()
+const answer = ref('')
+const loading = ref(true)
 
 onMounted(() => {
   $socket.on('chat', mess => {
+    loading.value = false
     answer.value += mess 
   })
 })
