@@ -25,12 +25,12 @@ export default defineEventHandler(async(event) => {
         "Attempt to include nature facts that you know in your answers.\n" + 
         
         "If you don't know the answer to a question, " +
-        "don't share false information." + 
+        "don't share false information. \n" + 
         "Speak Korean."
 });
 
 
-const q1 = "What is the tallest tree in the world?";
+const q1 = "세계에서 가장 큰 나무는 뭐야?";
 console.log("User: " + q1);
 
 const a1 = await session.prompt(q1);

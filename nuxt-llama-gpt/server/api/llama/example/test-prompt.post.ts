@@ -27,6 +27,7 @@ export default defineEventHandler(async(event) => {
   const a1 = await session.prompt(q1, {
     // 로그를 안찍어도 표시가 된다 socket대신에 사용하는거 같은데 
     onTextChunk(chunk: string) { // 스트리밍에 유용하다고 되어있다 text를 청크로 나눠서 전달에서 그런거 같긴한데
+      // socket emit()
       process.stdout.write(chunk);
     }
   });

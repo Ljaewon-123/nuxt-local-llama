@@ -1,21 +1,18 @@
 <script setup>
-import { socket } from "./socket";
-// import { io } from "socket.io-client";
-// const socket = io();
-
-console.log(socket)
+const { $socket }  = useNuxtApp();
+console.log($socket)
 const isConnected = ref(false);
 const transport = ref("N/A");
 
-if (socket.connected) {
+if ($socket.connected) {
   onConnect();
 }
 
 function onConnect() {
   isConnected.value = true;
-  transport.value = socket.io.engine.transport.name;
+  transport.value = $socket.io.engine.transport.name;
 
-  socket.io.engine.on("upgrade", (rawTransport) => {
+  $socket.io.engine.on("upgrade", (rawTransport) => {
     transport.value = rawTransport.name;
   });
 }
@@ -25,12 +22,12 @@ function onDisconnect() {
   transport.value = "N/A";
 }
 
-socket.on("connect", onConnect);
-socket.on("disconnect", onDisconnect);
+$socket.on("connect", onConnect);
+$socket.on("disconnect", onDisconnect);
 
 onBeforeUnmount(() => {
-  socket.off("connect", onConnect);
-  socket.off("disconnect", onDisconnect);
+  $socket.off("connect", onConnect);
+  $socket.off("disconnect", onDisconnect);
 });
 
 </script>
