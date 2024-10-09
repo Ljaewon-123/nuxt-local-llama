@@ -2,10 +2,14 @@
 <div class="position-relative ">
 
   <div id="chat-area" ref="chatAreaEl" class="px-16 py-8" >
-    <ChatLlama />
+    <!-- <ChatLlama /> -->
     <!-- <ChatClient /> -->
-    <div v-for="component in contentList">
-      <component :is="component.component" :saying="component.saying" ></component>
+    <div v-for="content, index in contentList">
+      <component 
+      :is="content.component" 
+      :saying="content.saying" 
+      :coment="isLastComponent(index) ? word : ''"
+      ></component>
     </div>
   </div>
 
@@ -22,28 +26,36 @@
 
 <script setup lang="ts">
 import type { DefineComponent } from 'vue';
-
-const goTo = useGoTo()
-const chatAreaEl = ref()
-const { height } = useElementSize(chatAreaEl)
-
-type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
-
 const ChatClient = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Client.vue')
 ))
 const ChatLlama = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Llama.vue')
 ))
+
+const { $socket }  = useNuxtApp();
+const goTo = useGoTo()
+const chatAreaEl = ref()
+const { height } = useElementSize(chatAreaEl)
+const word = ref()
+onMounted(() => {
+  $socket.on('chat', mess => {
+    word.value = mess 
+  })
+})
+
+type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
+
 const contentList = ref<ChatArea[]>([])
 
 // 클라입력 직후에 바로 ai 답변대기 표시를 하고 그 다음에 socket으로 답변을 받는다.
 const callLlama = async(say: string) => {
   contentList.value.push({
     component: ChatClient,
-    saying: say
+    saying: say,
   })
 
+  word.value = ''
   await delay(100) // 혹시 모르니 딜레이 살짝줌 
 
   contentList.value.push({
@@ -53,6 +65,11 @@ const callLlama = async(say: string) => {
   await delay(1000)
   goTo(height.value)
 }
+
+const isLastComponent = (index: number) => {
+  return index === contentList.value.length - 1
+}
+
 </script>
 
 <style lang="css" scoped>

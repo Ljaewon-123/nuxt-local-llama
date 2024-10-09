@@ -26,15 +26,20 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  coment: String
+})
 const { $socket }  = useNuxtApp();
 
-const answer = ref('')
+const answer = ref("")
+watchEffect(() => {
+  answer.value += props.coment ?? ''
+})
 const loading = ref(true)
 
 onMounted(() => {
   $socket.on('chat', mess => {
     loading.value = false
-    answer.value += mess 
   })
 })
 </script>
