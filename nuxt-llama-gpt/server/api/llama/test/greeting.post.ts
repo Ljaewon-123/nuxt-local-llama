@@ -36,5 +36,8 @@ export default defineEventHandler(async(event) => {
     })
   }
 
+  // 모든 입력이 끝나고 화면을 가장 아래로 내려줌 
+  io.emit('goto', true)
+
   return { successCode: 1 }
 })

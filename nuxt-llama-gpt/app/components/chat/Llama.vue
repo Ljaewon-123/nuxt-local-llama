@@ -39,8 +39,13 @@ const parsedAnswer = ref();
 
 watchEffect(async () => {
   // console.log(props.word) 뭔지 못찾음
+  // if(props.word == '\n\n') { console.log(props.word, 'n둘') }
+  // if(props.word == '\n') { console.log(props.word, 'n하나')}
+  // if(props.word == " ''' ") { console.log(props.word," ''' ")}
+  // if(props.word == " '' ") { console.log(props.word," '' ")}
+
   answer.value += props.word ?? ''
-  parsedAnswer.value = DOMPurify.sanitize(await marked(answer.value)); // 마크다운을 HTML로 변환
+  parsedAnswer.value = DOMPurify.sanitize(await marked(answer.value)); // 마크다운을 HTML로 변환 xss예방 
 })
 const loading = ref(true)
 
