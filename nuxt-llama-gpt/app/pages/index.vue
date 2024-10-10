@@ -8,7 +8,7 @@
       <component 
       :is="content.component" 
       :saying="content.saying" 
-      :coment="isLastComponent(index) ? word : ''"
+      :word="isLastComponent(index) ? word : ''"
       ></component>
     </div>
   </div>

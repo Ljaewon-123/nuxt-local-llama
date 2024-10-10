@@ -25,9 +25,9 @@ export default defineEventHandler(async(event) => {
     const answer = await session.prompt(question, {
       onTextChunk(chunk: string) {
         io.emit('chat', chunk)
-        console.log(chunk)
       }
     })
+    console.log(answer, '마지막')
   }
   catch{
     throw createError({

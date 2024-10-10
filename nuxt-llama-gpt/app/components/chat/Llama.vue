@@ -25,18 +25,22 @@
 
 <script setup lang="ts">
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 const props = defineProps({
-  coment: String
+  word: String
 })
 const { $socket }  = useNuxtApp();
 
 const answer = ref("")
 const parsedAnswer = ref();
 
-watchEffect(() => {
-  answer.value += props.coment ?? ''
-  parsedAnswer.value = marked(answer.value); // 마크다운을 HTML로 변환
+// const paragraphSeparation = computed(() => )
+
+watchEffect(async () => {
+  // console.log(props.word) 뭔지 못찾음
+  answer.value += props.word ?? ''
+  parsedAnswer.value = DOMPurify.sanitize(await marked(answer.value)); // 마크다운을 HTML로 변환
 })
 const loading = ref(true)
 
