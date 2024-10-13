@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (e: 'sendMessage', input: string): void
 }>()
 
-const { data, error, execute } = useLazyFetch('/api/llama/test/greeting',{
+const { data, error, execute } = useLazyFetch('/api/llama/test/create-chat-room',{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -50,8 +50,10 @@ const { data, error, execute } = useLazyFetch('/api/llama/test/greeting',{
   },
   onResponseError: ({ request, response, options }) => {
     const { status } = response
+    const { openModal } = usePageAuth()
+    
     if(status == CustomHttpCode.LoginSessionInvailed) {
-      navigateTo('/login')
+      openModal()
     }
   }
 })

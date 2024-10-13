@@ -74,4 +74,4 @@ export default defineEventHandler(async(event) => {
 // restore 기능 필요 
 // 각 채팅 재목별로 구분지을 기능 필요 
 
-// 우선 server쪽에서도 세션만료시 login으로 보내는 기능 필요
+// 우선 server쪽에서도 세션만료시 login으로 보내는 기능 필요 -> 클라이언트에서 처리 
