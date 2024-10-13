@@ -58,7 +58,6 @@ export default defineEventHandler(async(event) => {
     throw createError(new LoginSessionInvailed())
   }
 
-  console.log(currentSession.data.email, 'im session')
   const chatSession = new ChatHistoryModel({
     email: currentSession.data.email,
     messages: chatHistory

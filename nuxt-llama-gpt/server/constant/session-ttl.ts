@@ -1,0 +1,1 @@
+export default { ttl: 60 * 15* 15 }

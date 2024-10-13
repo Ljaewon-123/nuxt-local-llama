@@ -1,3 +1,5 @@
+import sessionTtl from "../constant/session-ttl";
+
 export class PageAuth {
   private redis = useRedis()
 
@@ -13,7 +15,7 @@ export class PageAuth {
   
   // test용으로 15분정도 설정 
   async refreshSession(session: { id: string , data: Object }){
-    await this.redis.setItem(session.id, session, { ttl: 60 * 15 }) 
+    await this.redis.setItem(session.id, session, sessionTtl) 
   }
 
 }

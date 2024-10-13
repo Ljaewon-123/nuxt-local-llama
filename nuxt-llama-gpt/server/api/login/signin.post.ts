@@ -1,5 +1,6 @@
 import UsersModel from "~~/server/models/Users"
 import CryptoJS from "crypto-js";
+import sessionTtl from "~~/server/constant/session-ttl";
 
 export default defineEventHandler( async(event) => {
 
@@ -31,7 +32,7 @@ export default defineEventHandler( async(event) => {
     userName: user.userName
   });
   const redis = useRedis()
-  await redis.setItem(session.id ?? 'null', session, { ttl: 60 * 15 * 15 })
+  await redis.setItem(session.id ?? 'null', session, sessionTtl)
 
   return true
 

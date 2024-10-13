@@ -9,6 +9,7 @@ export default defineEventHandler( async event => {
   const verification = await PageAuth.verification(session.id)
 
   if (!verification) {
+    console.log(" rejected 띄우기전!!@!@", session, "verify",verification)
     throw createError({
       statusCode: 498,
       statusMessage: 'Page Rejected',
