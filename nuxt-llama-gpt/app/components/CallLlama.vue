@@ -32,6 +32,8 @@ class="d-flex align-center pa-3">
 </template>
 
 <script setup lang="ts">
+import { CustomHttpCode } from '~/common/custom-http-code';
+
 // const userInput = defineModel({ default: '' })
 const userInput = ref()
 const llamaInput = ref()
@@ -45,6 +47,12 @@ const { data, error, execute } = useLazyFetch('/api/llama/test/greeting',{
   immediate: false,
   body:{
     message: llamaInput  // input에 있는 text미리 없애기 
+  },
+  onResponseError: ({ request, response, options }) => {
+    const { status } = response
+    if(status == CustomHttpCode.LoginSessionInvailed) {
+      navigateTo('/login')
+    }
   }
 })
 
