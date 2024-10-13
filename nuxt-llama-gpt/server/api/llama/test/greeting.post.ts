@@ -48,11 +48,15 @@ export default defineEventHandler(async(event) => {
   const authSession = await PageAuth.createSession(event)
   const redis = useRedis()
 
-  if(!authSession.id) return // 세션을 찾지 못했으면 로그인 만료로 login페이지로 보내야함 
+  if(!authSession.id) {
+    throw createError(new LoginSessionInvailed()) // 결국 클라이언트에서 어느정도 처리해줘야함 
+  }
 
   const currentSession = await redis.getItem<AuthSession>(authSession.id)
 
-  if(!currentSession) return // 세션을 찾지 못했으면 로그인 만료로 login페이지로 보내야함  
+  if(!currentSession) {
+    throw createError(new LoginSessionInvailed())
+  }
 
   console.log(currentSession.data.email, 'im session')
   const chatSession = new ChatHistoryModel({
@@ -68,3 +72,7 @@ export default defineEventHandler(async(event) => {
 
 // chat 히스토리는 그때그때 한것만 리턴함 
 // 각 세션별로 
+// restore 기능 필요 
+// 각 채팅 재목별로 구분지을 기능 필요 
+
+// 우선 server쪽에서도 세션만료시 login으로 보내는 기능 필요
