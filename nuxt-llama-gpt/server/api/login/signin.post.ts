@@ -31,7 +31,7 @@ export default defineEventHandler( async(event) => {
     userName: user.userName
   });
   const redis = useRedis()
-  await redis.setItem(session.id ?? 'null', session, { ttl: 60 * 15 })
+  await redis.setItem(session.id ?? 'null', session, { ttl: 60 * 15 * 15 })
 
   return true
 

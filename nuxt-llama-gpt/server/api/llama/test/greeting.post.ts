@@ -1,8 +1,11 @@
 import path from "path";
 import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
 import { io } from "~~/server/plugins/socket.io"
+import ChatHistoryModel from "~~/server/models/ChatHistory";
+import { AuthSession } from "../../types/session.type";
 
 export default defineEventHandler(async(event) => {
+
   const config = useRuntimeConfig()
   const rootPath = config.public.rootPath
   const llamaName = config.llamaName
@@ -39,5 +42,29 @@ export default defineEventHandler(async(event) => {
   // 모든 입력이 끝나고 화면을 가장 아래로 내려줌 
   io.emit('goto', true)
 
+  const chatHistory = session.getChatHistory();
+  console.log(chatHistory, 'chat history 저장 요소 확인 ')
+  
+  const authSession = await PageAuth.createSession(event)
+  const redis = useRedis()
+
+  if(!authSession.id) return // 세션을 찾지 못했으면 로그인 만료로 login페이지로 보내야함 
+
+  const currentSession = await redis.getItem<AuthSession>(authSession.id)
+
+  if(!currentSession) return // 세션을 찾지 못했으면 로그인 만료로 login페이지로 보내야함  
+
+  console.log(currentSession.data.email, 'im session')
+  const chatSession = new ChatHistoryModel({
+    email: currentSession.data.email,
+    messages: chatHistory
+  });
+
+  await chatSession.validate()
+  await chatSession.save()
+
   return { successCode: 1 }
 })
+
+// chat 히스토리는 그때그때 한것만 리턴함 
+// 각 세션별로 
