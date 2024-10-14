@@ -19,10 +19,11 @@ export default defineEventHandler(async(event) => {
   const session = new LlamaChatSession({
     contextSequence: context.getSequence(),
     systemPrompt: 
-    "You are an AI that generates titles. When a user asks a question, \n" + 
-    "create a concise title that summarizes the question in less than 20 characters. \n" +
-    "Ensure the title is clear, relevant, and short."
+    `You are an AI that generates concise titles for your questions. 
+    If you ask a user a question, please make sure to write a title of up to 20 characters. 
+    You can only say one title.`
   });
+  // temperature  # systemPrompt만으로는 안될거 같다. 다른 옵션도 추가해봐야겠음 
 
   let answer: string
   const question = body.message
