@@ -53,9 +53,9 @@
           </v-app-bar-nav-icon>
         </div>
       </template>
-      <!-- <v-list >
-
-      </v-list> -->
+      
+      <HeaderTitle />
+      
     </v-navigation-drawer>
   </div>
   <v-main class="d-flex align-center justify-center position-relative" >
@@ -63,17 +63,6 @@
       <slot></slot>
     </v-container>
   </v-main>
-
-  <!-- <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
-    <v-container fluid >
-      <v-row justify="center">
-        <v-col cols="8">
-          <CallLlama />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-bottom-navigation> -->
-
 
 </div>
 </template>

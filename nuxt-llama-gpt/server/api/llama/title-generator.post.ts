@@ -36,7 +36,7 @@ export default defineEventHandler(async(event) => {
   });
   // temperature 번역 문제인건가....???? 
 
-  let answer: string
+  let answer: string 
   const question = body.message
 
   try{

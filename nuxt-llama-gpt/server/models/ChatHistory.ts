@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 interface Chat {
   email: string;
@@ -36,6 +36,10 @@ const schema = new mongoose.Schema({
       },
     },
   ],
+  session:{
+    type: Schema.Types.ObjectId, 
+    ref: "chatSession"
+  }
 }, { timestamps: true });
 
 // Compiling Schema

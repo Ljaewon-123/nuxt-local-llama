@@ -33,6 +33,7 @@ class="d-flex align-center pa-3">
 
 <script setup lang="ts">
 import { CustomHttpCode } from '~/common/custom-http-code';
+import { useHeaderTitle } from '~/stores/useHeaderTitle';
 
 // const userInput = defineModel({ default: '' })
 const userInput = ref()
@@ -40,14 +41,33 @@ const llamaInput = ref()
 const emit = defineEmits<{
   (e: 'sendMessage', input: string): void
 }>()
+const { getAiTitle } = useHeaderTitle()
 
-const { data, error, execute } = useLazyFetch('/api/llama/test/create-chat-room',{
+const { data, error, execute } = useLazyFetch('/api/llama/test/greeting',{
   method: 'POST',
   watch: false,
   immediate: false,
   body:{
     message: llamaInput  // input에 있는 text미리 없애기 
   },
+  onResponseError: ({ request, response, options }) => {
+    const { status } = response
+    const { openModal } = usePageAuth()
+    
+    if(status == CustomHttpCode.LoginSessionInvailed) {
+      openModal()
+    }
+  }
+})
+
+const { data: title, error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/title-generator',{
+  method: 'POST',
+  immediate: false,
+  watch: false,
+  body:{
+    message: llamaInput
+  },
+  transform: title => title ?? 'New Chat',
   onResponseError: ({ request, response, options }) => {
     const { status } = response
     const { openModal } = usePageAuth()
@@ -78,6 +98,9 @@ const handleKeydown = async(event: KeyboardEvent) => {
 }
 
 const sendMessageLlama = async() => {
+  await titleExecute()
+  getAiTitle(title.value ?? 'New Chat')
+
   await execute()
 }
 
