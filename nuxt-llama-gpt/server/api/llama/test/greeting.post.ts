@@ -3,6 +3,8 @@ import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
 import { io } from "~~/server/plugins/socket.io"
 import ChatHistoryModel from "~~/server/models/ChatHistory";
 import { AuthSession } from "../../types/session.type";
+import ChatSessionModel from "~~/server/models/ChatSession";
+import UsersModel from "~~/server/models/Users";
 
 export default defineEventHandler(async(event) => {
 
@@ -22,7 +24,7 @@ export default defineEventHandler(async(event) => {
 
 
   const question = body.message
-  console.log('question user: ',question)
+  console.log('question user: ', question)
 
   try{
     const answer = await session.prompt(question, {
@@ -58,13 +60,28 @@ export default defineEventHandler(async(event) => {
     throw createError(new LoginSessionInvailed())
   }
 
-  const chatSession = new ChatHistoryModel({
+  const user = await UsersModel.findOne({
     email: currentSession.data.email,
-    messages: chatHistory
+  })
+  if(!user) throw Error('User not found')
+
+  const chatSession = await ChatSessionModel
+                        .findOne({ email: user._id })
+                        .populate('histories');
+
+  const historyModel = new ChatHistoryModel({
+    email: currentSession.data.email,
+    messages: chatHistory,
+    session: chatSession
   });
 
-  await chatSession.validate()
-  await chatSession.save()
+  chatSession?.histories.push(historyModel._id)
+  
+  await chatSession?.validate()
+  await chatSession?.save()
+
+  await historyModel.validate()
+  await historyModel.save()
 
   return { successCode: 1 }
 })

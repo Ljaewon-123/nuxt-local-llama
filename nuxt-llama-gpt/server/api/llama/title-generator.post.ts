@@ -4,6 +4,7 @@ import { io } from "~~/server/plugins/socket.io"
 import ChatHistoryModel from "~~/server/models/ChatHistory";
 import { AuthSession } from "../types/session.type";
 import ChatSessionModel from "~~/server/models/ChatSession";
+import UsersModel from "~~/server/models/Users";
 
 export default defineEventHandler(async(event) => {
 
@@ -41,25 +42,6 @@ export default defineEventHandler(async(event) => {
   let answer: string 
   const question = body.message
 
-  const authSession = await PageAuth.createSession(event)
-  const redis = useRedis()
-
-  if(!authSession.id) {
-    throw createError(new LoginSessionInvailed()) 
-  }
-  const currentSession = await redis.getItem<AuthSession>(authSession.id)
-  if(!currentSession) {
-    throw createError(new LoginSessionInvailed())
-  }
-
-  // const newSession = new ChatSessionModel();
-  // newSession.email = currentSession.data.email
-  // await newSession.save();
-  // const chatSession = await ChatSessionModel
-  //                       .findOne({ email: currentSession.data.email })
-  //                       .populate('histories');
-  // chatSession?.histories.push()
-
   try{
     answer = await session.prompt(question, {
       temperature: 0.7, // 텍스트의 임의성을 제어 클수록 무작위성 
@@ -77,6 +59,29 @@ export default defineEventHandler(async(event) => {
       message: "LLama prompt error"
     })
   }
+
+  const authSession = await PageAuth.createSession(event)
+  const redis = useRedis()
+
+  if(!authSession.id) {
+    throw createError(new LoginSessionInvailed()) 
+  }
+  const currentSession = await redis.getItem<AuthSession>(authSession.id)
+  if(!currentSession) {
+    throw createError(new LoginSessionInvailed())
+  }
+
+  const user = await UsersModel.findOne({
+    email: currentSession.data.email,
+  })
+  if(!user) throw Error('User not found')
+
+  const newSession = new ChatSessionModel({ 
+    email: user._id,
+    title: answer
+  });
+  await newSession.validate()
+  await newSession.save();
 
   return answer
 })

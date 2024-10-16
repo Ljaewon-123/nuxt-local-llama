@@ -99,6 +99,7 @@ const handleKeydown = async(event: KeyboardEvent) => {
 
 const sendMessageLlama = async() => {
   await titleExecute()
+  if(error.value) throw Error('server error')
   getAiTitle(title.value ?? 'New Chat')
 
   await execute()
