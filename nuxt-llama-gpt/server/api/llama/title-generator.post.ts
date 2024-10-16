@@ -2,7 +2,6 @@ import path from "path";
 import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
 import { io } from "~~/server/plugins/socket.io"
 import ChatHistoryModel from "~~/server/models/ChatHistory";
-import { AuthSession } from "../../types/session.type";
 
 export default defineEventHandler(async(event) => {
 
@@ -29,17 +28,21 @@ export default defineEventHandler(async(event) => {
     - Question: 'How do I use Promises in JavaScript?' → Title: 'JavaScript Promises'
     - Question: 'What colors are in a rainbow?' → Title: 'Rainbow Colors'"
     - Question: 'Make some code ~' → Title: 'Create some code'"
+    - Question: 'Why is the sky blue?' → Title: 'Sky Color Reason'
+    - Question: 'How does a rainbow form?' → Title: 'Rainbow Formation'
+    - Question: '하늘이 파란색인 이유' → Title: '하늘이 파란 이유'
+    - Question: '무지개는 어떻게 생기나?' → Title: '무지개 생성 원리'
     `,
   });
-  // temperature  # systemPrompt만으로는 안될거 같다. 다른 옵션도 추가해봐야겠음 
+  // temperature 번역 문제인건가....???? 
 
   let answer: string
   const question = body.message
 
   try{
     answer = await session.prompt(question, {
-      temperature: 0.8, // 텍스트의 임의성을 제어 클수록 무작위성 
-      topK: 40, // 가장 가능성이 높은 K개의 다음 토큰만 고려하도록 모델을 제한
+      temperature: 0.7, // 텍스트의 임의성을 제어 클수록 무작위성 
+      topK: 50, // 가장 가능성이 높은 K개의 다음 토큰만 고려하도록 모델을 제한
       topP: 0.9, // 더 자연스러운 문장 생성
       seed: 2462 // 생성된 텍스트의 임의성을 제어, 창의적 점수같은데 제목 생성기엔 적합할듯
     })
