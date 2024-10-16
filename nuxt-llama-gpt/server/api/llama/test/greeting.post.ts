@@ -12,7 +12,7 @@ export default defineEventHandler(async(event) => {
   const body = await readBody<{ message: string }>(event)
   const llama = await getLlama();
   const model = await llama.loadModel({
-    modelPath: path.join(rootPath, "models", llamaName + ".gguf")
+    modelPath: path.join(rootPath, "aimodels", llamaName + ".gguf")
   });
   const context = await model.createContext();
 

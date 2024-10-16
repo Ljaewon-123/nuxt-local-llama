@@ -12,16 +12,21 @@ export default defineEventHandler(async(event) => {
   const body = await readBody<{ message: string }>(event)
   const llama = await getLlama();
   const model = await llama.loadModel({
-    modelPath: path.join(rootPath, "models", llamaName + ".gguf")
+    modelPath: path.join(rootPath, "aimodels", llamaName + ".gguf")
   });
   const context = await model.createContext();
 
   const session = new LlamaChatSession({
     contextSequence: context.getSequence(),
     systemPrompt: 
-    `You are an AI that generates concise titles for your questions. 
+    `You are an AI that generates **short and concise titles** for your questions. 
     If you ask a user a question, please make sure to write a title of up to 20 characters. 
-    You can only say one title.`
+    You can only say one title.
+    Examples:
+    - Question: 'How do I use Promises in JavaScript?' → Title: 'JavaScript Promises'
+    - Question: 'What colors are in a rainbow?' → Title: 'Rainbow Colors'"
+    - Question: 'Make some code ~' → Title: 'Create some code'"
+    `
   });
   // temperature  # systemPrompt만으로는 안될거 같다. 다른 옵션도 추가해봐야겠음 
 
