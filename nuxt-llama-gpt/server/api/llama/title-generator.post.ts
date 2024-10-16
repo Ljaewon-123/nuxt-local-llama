@@ -2,6 +2,8 @@ import path from "path";
 import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
 import { io } from "~~/server/plugins/socket.io"
 import ChatHistoryModel from "~~/server/models/ChatHistory";
+import { AuthSession } from "../types/session.type";
+import ChatSessionModel from "~~/server/models/ChatSession";
 
 export default defineEventHandler(async(event) => {
 
@@ -34,10 +36,29 @@ export default defineEventHandler(async(event) => {
     - Question: '무지개는 어떻게 생기나?' → Title: '무지개 생성 원리'
     `,
   });
-  // temperature 번역 문제인건가....???? 
+  // 번역 문제인건가....???? 
 
   let answer: string 
   const question = body.message
+
+  const authSession = await PageAuth.createSession(event)
+  const redis = useRedis()
+
+  if(!authSession.id) {
+    throw createError(new LoginSessionInvailed()) 
+  }
+  const currentSession = await redis.getItem<AuthSession>(authSession.id)
+  if(!currentSession) {
+    throw createError(new LoginSessionInvailed())
+  }
+
+  // const newSession = new ChatSessionModel();
+  // newSession.email = currentSession.data.email
+  // await newSession.save();
+  // const chatSession = await ChatSessionModel
+  //                       .findOne({ email: currentSession.data.email })
+  //                       .populate('histories');
+  // chatSession?.histories.push()
 
   try{
     answer = await session.prompt(question, {
