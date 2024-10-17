@@ -42,6 +42,10 @@ onMounted(() => {
   $socket.on('chat', mess => {
     word.value = mess 
   })
+
+  $socket.on('goto', () => {
+    goTo(height.value)
+  })
 })
 
 type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
@@ -66,11 +70,6 @@ const callLlama = async(say: string) => {
   goTo(height.value)
 }
 
-onMounted(() => {
-  $socket.on('goto', () => {
-    goTo(height.value)
-  })
-})
 
 const isLastComponent = (index: number) => {
   return index === contentList.value.length - 1

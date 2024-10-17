@@ -1,11 +1,6 @@
-import path from "path";
-import fs from "fs/promises";
-import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
-import { io } from "~~/server/plugins/socket.io"
-import ChatHistoryModel from "~~/server/models/ChatHistory";
 import ChatSessionModel from "~~/server/models/ChatSession";
 import UsersModel from "~~/server/models/Users";
-import { AuthSession } from "../../types/session.type";
+
 
 export default defineEventHandler(async(event) => {
 
@@ -16,16 +11,7 @@ export default defineEventHandler(async(event) => {
   let answer: string 
   const question = body.message
 
-  const authSession = await PageAuth.createSession(event)
-  const redis = useRedis()
-
-  if(!authSession.id) {
-    throw createError(new LoginSessionInvailed()) 
-  }
-  const currentSession = await redis.getItem<AuthSession>(authSession.id)
-  if(!currentSession) {
-    throw createError(new LoginSessionInvailed())
-  }
+  const currentSession = await PageAuth.getCurrentSession(event)
 
   answer = "New Title Test"
   const user = await UsersModel.findOne({

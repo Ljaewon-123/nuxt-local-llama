@@ -60,16 +60,7 @@ export default defineEventHandler(async(event) => {
     })
   }
 
-  const authSession = await PageAuth.createSession(event)
-  const redis = useRedis()
-
-  if(!authSession.id) {
-    throw createError(new LoginSessionInvailed()) 
-  }
-  const currentSession = await redis.getItem<AuthSession>(authSession.id)
-  if(!currentSession) {
-    throw createError(new LoginSessionInvailed())
-  }
+  const currentSession = await PageAuth.getCurrentSession(event)
 
   const user = await UsersModel.findOne({
     email: currentSession.data.email,

@@ -17,18 +17,7 @@ export default defineEventHandler(async(event) => {
   const chatHistory = JSON.parse(await fs.readFile("chatHistory.json", "utf8"));
   console.log(chatHistory, 'chat history 저장 요소 확인 ')
   
-  const authSession = await PageAuth.createSession(event)
-  const redis = useRedis()
-
-  if(!authSession.id) {
-    throw createError(new LoginSessionInvailed()) // 결국 클라이언트에서 어느정도 처리해줘야함 
-  }
-
-  const currentSession = await redis.getItem<AuthSession>(authSession.id)
-
-  if(!currentSession) {
-    throw createError(new LoginSessionInvailed())
-  }
+  const currentSession = await PageAuth.getCurrentSession(event)
 
   const user = await UsersModel.findOne({
     email: currentSession.data.email,

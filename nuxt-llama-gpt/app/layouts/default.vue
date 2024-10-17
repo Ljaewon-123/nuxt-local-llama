@@ -54,7 +54,7 @@
         </div>
       </template>
       
-      <HeaderTitle />
+      <HeaderTitles />
       
     </v-navigation-drawer>
   </div>

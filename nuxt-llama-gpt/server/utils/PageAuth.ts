@@ -1,4 +1,10 @@
+import { AuthSession } from "../api/types/session.type";
 import sessionTtl from "../constant/session-ttl";
+
+interface Session {
+  id: string ,
+  data: Object 
+}
 
 export class PageAuth {
   private redis = useRedis()
@@ -13,9 +19,25 @@ export class PageAuth {
     return await this.redis.getItem(sessionId)
   }
   
-  // test용으로 15분정도 설정 
-  async refreshSession(session: { id: string , data: Object }){
+  async refreshSession(session: Session){
     await this.redis.setItem(session.id, session, sessionTtl) 
+  }
+
+  async getCurrentSession(event: any): Promise<AuthSession> {
+    const authSession = await this.createSession(event)
+    
+    if (!authSession.id) {
+      throw createError(new LoginSessionInvailed());
+    }
+  
+    const redis = useRedis();
+    const currentSession = await redis.getItem<AuthSession>(authSession.id);
+    
+    if (!currentSession) {
+      throw createError(new LoginSessionInvailed());
+    }
+  
+    return currentSession;
   }
 
 }

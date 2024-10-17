@@ -33,15 +33,14 @@ class="d-flex align-center pa-3">
 
 <script setup lang="ts">
 import { CustomHttpCode } from '~/common/custom-http-code';
-import { useHeaderTitle } from '~/stores/useHeaderTitle';
+import { useTrigger } from '~/stores/useTrigger';
 
-// const userInput = defineModel({ default: '' })
+const { changeTrigger } = useTrigger()
 const userInput = ref()
 const llamaInput = ref()
 const emit = defineEmits<{
   (e: 'sendMessage', input: string): void
 }>()
-const { getAiTitle } = useHeaderTitle()
 
 const { data, error, execute } = useLazyFetch('/api/llama/test/test-greeting',{
   method: 'POST',
@@ -100,7 +99,8 @@ const handleKeydown = async(event: KeyboardEvent) => {
 const sendMessageLlama = async() => {
   await titleExecute()
   if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
-  getAiTitle(title.value ?? 'New Chat')
+
+  changeTrigger() // 사이드바에 타이틀 재조정 
 
   await execute()
 }
