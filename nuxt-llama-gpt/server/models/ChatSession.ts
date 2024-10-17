@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
   histories:[{
     type: Schema.Types.ObjectId, ref: "chatHistory", trim: true
   }]
-})
+}, { timestamps: true })
 
 
 const ChatSessionModel = mongoose.model('chatSession', schema)

@@ -99,7 +99,7 @@ const handleKeydown = async(event: KeyboardEvent) => {
 
 const sendMessageLlama = async() => {
   await titleExecute()
-  if(error.value) throw Error('server error')
+  if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
   getAiTitle(title.value ?? 'New Chat')
 
   await execute()

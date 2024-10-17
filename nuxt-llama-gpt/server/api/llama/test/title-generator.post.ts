@@ -32,13 +32,17 @@ export default defineEventHandler(async(event) => {
     email: currentSession.data.email,
   })
   if(!user) throw Error('User not found')
-
   const newSession = new ChatSessionModel({ 
     email: user._id,
     title: answer
   });
   await newSession.validate() 
   await newSession.save();
+
+  user.chatSession.push(newSession._id)
+
+  await user.validate()
+  await user.save();
 
   return answer
 })

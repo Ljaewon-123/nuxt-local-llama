@@ -40,7 +40,7 @@ const schema = new mongoose.Schema({
     type: Schema.Types.ObjectId, 
     ref: "chatSession"
   }
-}, { timestamps: true });
+});
 
 // Compiling Schema
 const ChatHistoryModel = mongoose.model('chatHistory', schema)
