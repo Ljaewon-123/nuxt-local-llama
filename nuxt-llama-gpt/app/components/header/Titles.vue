@@ -1,15 +1,32 @@
 <template>
-  <!-- <v-list class="px-4" >
-    <v-list-item
-      v-for="doc in data"
-      :key="doc._id"
-      :title="doc.title"
-      :value="doc._id"
-      :subtitle="doc.updatedAt"
-      rounded="lg"
-    ></v-list-item>
-  </v-list> -->
-  {{ data }}
+  <div v-for="docObject, key, index in data" :key="key" >
+    <template v-if="Array.isArray(docObject) && docObject.length != 0">
+      <v-list class="px-4" >
+        <v-list-subheader >{{ key }}</v-list-subheader>
+        <v-list-item
+          v-for="doc in docObject"
+          :key="doc._id"
+          :title="doc.title"
+          :value="doc._id"
+          :subtitle="doc.updatedAt"
+          rounded="lg"
+        ></v-list-item>
+      </v-list>
+    </template>
+    <!-- <template v-else-if="docObject.constructor == Object && Object.keys(docObject).length == 0">
+      <v-list class="px-4" >
+        <v-list-subheader >{{ key }}</v-list-subheader>
+        <v-list-item
+          v-for="doc in docObject"
+          :key="doc._id"
+          :title="doc.title"
+          :value="doc._id"
+          :subtitle="doc.updatedAt"
+          rounded="lg"
+        ></v-list-item>
+      </v-list>
+    </template> -->
+  </div>
 </template>
 
 <script setup lang="ts">
