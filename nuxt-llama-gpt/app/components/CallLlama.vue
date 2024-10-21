@@ -5,6 +5,7 @@ density="compact"
 class="d-flex align-center pa-3">
   <v-icon>mdi-paperclip</v-icon>
   <v-textarea
+    :id="id"
     v-model="userInput"
     flat
     placeholder="Call the llama"
@@ -41,6 +42,7 @@ const llamaInput = ref()
 const emit = defineEmits<{
   (e: 'sendMessage', input: string): void
 }>()
+const id = useId()
 
 const { data, error, execute } = useLazyFetch('/api/llama/test/test-greeting',{
   method: 'POST',

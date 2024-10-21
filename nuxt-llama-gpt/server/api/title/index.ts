@@ -7,10 +7,11 @@ export default defineEventHandler( async(event) => {
     email: currentSession.data.email,
   }).populate({
     path: 'chatSession',
-    select: '-email -createdAt -histories' // 필드를 제외하고 가져옴 
+    select: '-email -createdAt -histories -__v', // 필드를 제외하고 가져옴 
+    options: { sort: { updatedAt: -1 } }
   })
   if(!user) throw Error('User not found')
 
-  // console.log(user.chatSession)
+  console.log(user.chatSession)
   return user.chatSession
 })
