@@ -9,10 +9,15 @@
             :key="doc._id"
             :title="doc.title"
             :value="doc._id"
-            :subtitle="doc.updatedAt"
             :to="'/chat/' + doc._id"
             rounded="lg"
-          ></v-list-item>
+          >
+            <div class="position-absolute" style="
+              top: 50%; transform: translateY(-50%);right: 10%;
+            ">
+              <v-btn icon="mdi-dots-horizontal" size="x-small" variant="text"></v-btn>
+            </div>
+          </v-list-item>
         </template>
       </div>
     </v-list>
