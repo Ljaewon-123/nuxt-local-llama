@@ -44,7 +44,7 @@ const emit = defineEmits<{
 }>()
 const id = useId()
 
-const { data, error, execute } = useLazyFetch('/api/llama/test/test-greeting',{
+const { data, error, execute } = useLazyFetch('/api/llama/create-text',{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -61,7 +61,7 @@ const { data, error, execute } = useLazyFetch('/api/llama/test/test-greeting',{
   }
 })
 
-const { data: title, error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/test/title-generator',{
+const { data: title, error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
   method: 'POST',
   immediate: false,
   watch: false,

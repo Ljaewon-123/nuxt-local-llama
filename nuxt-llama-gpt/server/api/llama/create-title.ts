@@ -74,5 +74,11 @@ export default defineEventHandler(async(event) => {
   await newSession.validate()
   await newSession.save();
 
+  user.chatSession.push(newSession._id)
+
+  await user.validate()
+  await user.save();
+
+
   return answer
 })

@@ -12,6 +12,6 @@ export default defineEventHandler( async(event) => {
   })
   if(!user) throw Error('User not found')
 
-  console.log(user.chatSession)
+  console.log(user.chatSession, 'create title')
   return user.chatSession
 })
