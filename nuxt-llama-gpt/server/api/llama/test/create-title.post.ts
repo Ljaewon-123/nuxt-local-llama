@@ -30,5 +30,5 @@ export default defineEventHandler(async(event) => {
   await user.validate()
   await user.save();
 
-  return answer
+  return newSession._id
 })

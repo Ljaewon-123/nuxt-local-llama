@@ -9,6 +9,7 @@
           :title="doc.title"
           :value="doc._id"
           :subtitle="doc.updatedAt"
+          :to="doc._id"
           rounded="lg"
         ></v-list-item>
       </v-list>
@@ -89,7 +90,7 @@ function splitTitlesByDate(titles: TitleType[]) {
     threeDaysAgo: [] as TitleType[],
     sevenDaysAgo: [] as TitleType[],
     thirtyDaysAgo: [] as TitleType[],
-    etc: [] as TitleType[],
+    // etc: [] as TitleType[],
     pastMonths: {} as Record<string, TitleType[]>, // Grouped by month
     pastYears: {} as Record<number, TitleType[]>,  // Grouped by year
   };
@@ -108,27 +109,27 @@ function splitTitlesByDate(titles: TitleType[]) {
 
     else if (isThirtyDaysAgo(updatedAtDate, now)) grouped.thirtyDaysAgo.push(title)
 
-    else{
-      grouped.thirtyDaysAgo.push(title)
-    }
-
-    // else if (isWithinSameYear(updatedAtDate, now)) {
-    //   // 같은 연도 내에서 월별로 분리
-    //   const month = updatedAtDate.toLocaleString('default', { month: 'long' })
-    //   const monthKey = `${updatedAtDate.getFullYear()}-${month}`
-    //   if (!grouped.pastMonths[monthKey]) {
-    //     grouped.pastMonths[monthKey] = []
-    //   }
-    //   grouped.pastMonths[monthKey].push(title)
-    // } 
-    // else {
-    //   // 연도가 다르면 연도별로 그룹화
-    //   const year = updatedAtDate.getFullYear()
-
-    //   if (!grouped.pastYears[year]) grouped.pastYears[year] = []
-
-    //   grouped.pastYears[year].push(title)
+    // else{
+    //   grouped.thirtyDaysAgo.push(title)
     // }
+
+    else if (isWithinSameYear(updatedAtDate, now)) {
+      // 같은 연도 내에서 월별로 분리
+      const month = updatedAtDate.toLocaleString('default', { month: 'long' })
+      const monthKey = `${updatedAtDate.getFullYear()}-${month}`
+      if (!grouped.pastMonths[monthKey]) {
+        grouped.pastMonths[monthKey] = []
+      }
+      grouped.pastMonths[monthKey].push(title)
+    } 
+    else {
+      // 연도가 다르면 연도별로 그룹화
+      const year = updatedAtDate.getFullYear()
+
+      if (!grouped.pastYears[year]) grouped.pastYears[year] = []
+
+      grouped.pastYears[year].push(title)
+    }
   })
 
   return grouped
