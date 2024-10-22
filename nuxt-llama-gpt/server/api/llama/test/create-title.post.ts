@@ -30,5 +30,6 @@ export default defineEventHandler(async(event) => {
   await user.validate()
   await user.save();
 
-  return newSession._id
+  // console.log(newSession._id.toString(), typeof newSession._id.toString())
+  return newSession._id.toString()
 })

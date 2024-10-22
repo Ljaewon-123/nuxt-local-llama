@@ -10,7 +10,7 @@
             :title="doc.title"
             :value="doc._id"
             :subtitle="doc.updatedAt"
-            :to="doc._id"
+            :to="'/chat/' + doc._id"
             rounded="lg"
           ></v-list-item>
         </template>

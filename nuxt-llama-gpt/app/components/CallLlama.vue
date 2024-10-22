@@ -45,7 +45,7 @@ const emit = defineEmits<{
 const id = useId()
 const route = useRoute()
 
-const { execute: textExecute } = useLazyFetch('/api/llama/test/create-text',{
+const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -62,7 +62,7 @@ const { execute: textExecute } = useLazyFetch('/api/llama/test/create-text',{
   }
 })
 
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/test/create-title',{
+const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
   method: 'POST',
   immediate: false,
   watch: false,
@@ -102,13 +102,13 @@ const handleKeydown = async(event: KeyboardEvent) => {
 const sendMessageLlama = async() => {
   // route가 "/"면 초기 페이지로 여기서 입력하게 되면 제목을 생성한후 해당 params로 이동 
   // chat/id 라면 text생성만 
-  if(route.name == '/'){
+  if(route.name == 'index'){
     await titleExecute()
     if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
   
     changeTrigger() // 사이드바에 타이틀 재조정 
 
-    navigateTo(`/chat/${titleData}`) // title bar 고치고 마저 해야함 
+    navigateTo(`/chat/${titleData.value}`)
 
     return 
   }
