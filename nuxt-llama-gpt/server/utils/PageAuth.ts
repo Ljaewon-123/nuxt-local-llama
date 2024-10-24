@@ -3,7 +3,7 @@ import sessionTtl from "../constant/session-ttl";
 
 interface Session {
   id: string ,
-  data: Object 
+  data: object 
 }
 
 export class PageAuth {
