@@ -4,7 +4,7 @@ export default defineEventHandler( async event => {
 
   const session = await PageAuth.createSession(event)
 
-  if(!session.id) throw 'User not log in'
+  if(!session.id) throw 'User not login'
 
   const verification = await PageAuth.verification(session.id)
 

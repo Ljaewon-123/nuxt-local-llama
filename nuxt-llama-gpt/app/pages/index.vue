@@ -1,9 +1,21 @@
 <template>
 <div class="position-relative ">
 
-  <div id="welcome-text" class="px-16 py-8" >
-    Welcome Hello World
-  </div>
+  <v-main>
+    <div id="welcome-text" class="px-8 py-8" >
+      <p style="font-weight: 600; font-size: 8rem;">
+        Welcome 
+        <span style="color:#4070F4">
+          Hello World
+        </span>
+      </p>
+      <TextTyping :texts="[
+        'Your helper',
+        'Your smart llama',
+        'Your friend'
+      ]"/>  
+    </div>
+  </v-main>
 
   <!-- 이놈이 좀더 free해야할거 같은데  -->
   <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >

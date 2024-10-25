@@ -1,5 +1,7 @@
-class LoginSessionInvailed {
-  statusCode: number = 580;
+import { CustomHttpCode } from "~/common/custom-http-code";
+
+export class LoginSessionInvailed {
+  statusCode: number = CustomHttpCode.LoginSessionInvailed;
   statusMessage: string = 'Login Session Invailed';
   message: string = 'Login Session Invailed';
 

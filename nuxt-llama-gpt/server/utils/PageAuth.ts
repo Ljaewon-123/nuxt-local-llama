@@ -1,4 +1,5 @@
 import { AuthSession } from "../api/types/session.type";
+import { LoginSessionInvailed } from "../common/http-code/login-session-invailed";
 import sessionTtl from "../constant/session-ttl";
 
 interface Session {
