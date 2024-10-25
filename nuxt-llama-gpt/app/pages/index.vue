@@ -13,7 +13,8 @@
         'Your helper',
         'Your smart llama',
         'Your friend'
-      ]"/>  
+      ]"
+      />  
     </div>
   </v-main>
 

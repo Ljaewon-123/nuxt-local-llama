@@ -14,6 +14,10 @@ const props = defineProps({
   defaultText: {
     type: String,
     default: "I'm a"
+  },
+  secColor: {
+    type: String,
+    default: '#4070F4'
   }
 })
 
@@ -45,7 +49,7 @@ onUnmounted(() => clearInterval(timeoutId.value))
 }
 .container .text{
   position: relative;
-  color: #4070F4;
+  color: v-bind(secColor);
   font-size: 4rem;
   font-weight: 600;
 }
@@ -60,7 +64,7 @@ onUnmounted(() => clearInterval(timeoutId.value))
   height: 100%;
   width: 100%;
   background-color: #111111;
-  border-left: 2px solid #4070F4;
+  border-left: 2px solid v-bind(secColor);
   animation: animate 4s steps(12) infinite;
 }
 @keyframes animate{
