@@ -8,7 +8,7 @@
     append-inner-icon="mdi-email-outline"
     label="Email"
     variant="solo-filled"
-    :rules="emptyValue"
+    :rules="[emptyValue, emailFormat]"
   ></v-text-field>
   <v-text-field
     v-model="password"
@@ -16,7 +16,7 @@
     append-inner-icon="mdi-account-outline"
     label="Password"
     variant="solo-filled"
-    :rules="emptyValue"
+    :rules="[emptyValue]"
     :type="show ? 'text' : 'password'"
     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
     @click:append="show = !show"
@@ -27,7 +27,7 @@
     append-inner-icon="mdi-lock-outline"
     label="User name"
     variant="solo-filled"
-    :rules="emptyValue"
+    :rules="[emptyValue]"
     @keyup.enter.prevent="signUp"
   ></v-text-field>
 
@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import emailFormat from '~/constant/rules/emailFormat';
 import emptyValue from '~/constant/rules/emptyValue';
 
 const { encryptStr } = useCrypto()
