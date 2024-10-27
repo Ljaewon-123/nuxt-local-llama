@@ -1,7 +1,7 @@
 <template>
   <div class="container" >
-    <span class="text first-text">{{ props.defaultText }}</span>
-    <span class="text sec-text">{{ text }}</span>
+    <span class="font-setup first-text">{{ props.defaultText }}</span>
+    <span class="font-setup text sec-text text-color-back">{{ text }}</span>
   </div>
 </template>
 
@@ -50,7 +50,9 @@ onUnmounted(() => clearInterval(timeoutId.value))
 .container .text{
   position: relative;
   color: v-bind(secColor);
-  font-size: 4rem;
+}
+.font-setup{
+  font-size: 3rem;
   font-weight: 600;
 }
 .container .text.first-text{

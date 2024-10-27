@@ -72,7 +72,7 @@ const drawer = ref(true)
 
 const logout = async() => {
   try {
-    await $fetch('/api/logout')
+    await $fetch('/api/logout', {method: 'POST'})
     navigateTo('/login')
   } catch (error) {
     console.error(error, 'server error')

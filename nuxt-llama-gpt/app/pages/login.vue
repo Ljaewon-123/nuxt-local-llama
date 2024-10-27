@@ -38,10 +38,18 @@
 </template>
 
 <script setup lang="ts">
-
 definePageMeta({
   layout: false,
 })
+const initSession = async() => {
+  try {
+    await $fetch('/api/logout', {method: 'POST'})
+    navigateTo('/login')
+  } catch (error) {
+    console.error(error, 'server error')
+  }
+}
+await initSession()
 const { name } = useDisplay()
 const signIn = ref(true)
 const signUp = ref(false)

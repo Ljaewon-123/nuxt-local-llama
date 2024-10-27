@@ -4,9 +4,11 @@ export default defineEventHandler( async(event) => {
 
   const redis = useRedis()
 
-  if(!session.id) throw 'session keys miss'
+  if(!session.id) throw Error('already logout')
 
-  redis.removeItem(session.id)
+  redis.clear(session.id)
+  await session.clear()
 
+  redis.removeItem(session?.id)
 
 })

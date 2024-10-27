@@ -3,7 +3,7 @@
 
   <v-main>
     <div id="welcome-text" class="px-8 py-8" >
-      <p style="font-weight: 600; font-size: 8rem;">
+      <p style="font-weight: 600; font-size: 5rem;">
         Welcome 
         <span style="color:#4070F4">
           Hello World
