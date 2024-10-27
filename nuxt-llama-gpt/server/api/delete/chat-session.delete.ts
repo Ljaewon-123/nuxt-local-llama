@@ -5,7 +5,7 @@ export default defineEventHandler( async(event) => {
   const body = await readBody(event)
 
   try{
-    await ChatSessionModel.findOneAndDelete({ _id: body.id })
+    await ChatSessionModel.deleteOne({ _id: body.id })
     return true
   }
   catch(e){

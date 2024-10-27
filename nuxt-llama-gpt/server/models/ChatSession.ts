@@ -11,8 +11,8 @@ const schema = new mongoose.Schema({
   }]
 }, { timestamps: true })
 
-// Pre-middleware to handle related deletions
-schema.pre("findOneAndDelete", async function (next) {
+// Pre-middleware to handle related deletions #findOneAndDelete
+schema.pre("deleteOne", async function (next) {
   const sessionId = this.getQuery()._id;
 
   // 1. chatHistory에서 관련 문서 삭제
