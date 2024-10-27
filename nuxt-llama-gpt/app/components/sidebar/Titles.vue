@@ -11,7 +11,6 @@
             :title="doc.title"
             :value="doc._id"
             :to="'/chat/' + doc._id"
-            @click="test"
             rounded="lg"
           >
             <div class="position-absolute" style="top: 50%; transform: translateY(-50%);right: 10%;">
@@ -22,8 +21,9 @@
                 <v-card width="250" rounded="lg">
                   <v-list>
                     <v-list-item
-                      color="error"
-                      rounded="shaped"
+                      @click="deleteChatSession(doc._id)"
+                      base-color="error"
+                      rounded="lg"
                     >
                       <template #prepend>
                         <v-icon :icon="'mdi-delete-outline'"></v-icon>
@@ -57,15 +57,11 @@
 
 <script setup lang="ts">
 import { useTrigger } from '~/stores/useTrigger';
-
+const { changeTrigger } = useTrigger()
 interface TitleType {
   _id: string
   title: string
   updatedAt: string // Date 
-}
-
-const test = () => {
-  alert('clciek')
 }
 
 const { data, error, refresh } = useFetch('/api/title',{
@@ -82,9 +78,15 @@ watch( trigger, async() => {
   await refresh()
 })
 
-const toChatSession = (id:string) => {
-  navigateTo('/chat/' + id)
+const deleteChatSession = async(id:string) => {
+  const res = await $fetch('/api/delete/chat-session', { 
+    method: 'DELETE',
+    body: {
+      id
+    }
+  })
+  
+  if(res) changeTrigger()
 }
-
 
 </script>
