@@ -1,5 +1,6 @@
 <template>
   <div  >
+    <!-- :to="'/chat/' + doc._id" -->
     <v-list class="px-4" >
       <div v-for="docObject, key, index in data" :key="key">
         <template v-if="Array.isArray(docObject) && docObject.length != 0">
@@ -10,12 +11,29 @@
             :title="doc.title"
             :value="doc._id"
             :to="'/chat/' + doc._id"
+            @click="test"
             rounded="lg"
           >
-            <div class="position-absolute" style="
-              top: 50%; transform: translateY(-50%);right: 10%;
-            ">
-              <v-btn icon="mdi-dots-horizontal" size="x-small" variant="text"></v-btn>
+            <div class="position-absolute" style="top: 50%; transform: translateY(-50%);right: 10%;">
+              <v-menu>
+                <template #activator="{ props }">
+                  <v-btn icon="mdi-dots-horizontal" size="x-small" variant="text" v-bind="props" @click.stop.prevent.self ></v-btn>
+                </template>
+                <v-card width="250" rounded="lg">
+                  <v-list>
+                    <v-list-item
+                      color="error"
+                      rounded="shaped"
+                    >
+                      <template #prepend>
+                        <v-icon :icon="'mdi-delete-outline'"></v-icon>
+                      </template>
+
+                      <v-list-item-title v-text="'Delete'"></v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-menu>
             </div>
           </v-list-item>
         </template>
@@ -46,6 +64,10 @@ interface TitleType {
   updatedAt: string // Date 
 }
 
+const test = () => {
+  alert('clciek')
+}
+
 const { data, error, refresh } = useFetch('/api/title',{
   transform: (data:TitleType[]) => {
     const dateGrouper = new DateGrouper();
@@ -59,6 +81,10 @@ const { trigger } = storeToRefs(triggerP)
 watch( trigger, async() => {
   await refresh()
 })
+
+const toChatSession = (id:string) => {
+  navigateTo('/chat/' + id)
+}
 
 
 </script>
