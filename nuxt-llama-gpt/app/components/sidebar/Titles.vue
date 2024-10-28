@@ -6,17 +6,30 @@
         <template v-if="Array.isArray(docObject) && docObject.length != 0">
           <v-list-subheader >{{ key }}</v-list-subheader>
           <v-list-item
-            v-for="doc in docObject"
+            v-for="doc, docIndex in docObject"
             :key="doc._id"
             :value="doc._id"
             :to="'/chat/' + doc._id"
             rounded="lg"
           >
-            <v-list-item-title :id="'s' + doc._id">
+            <v-list-item-title v-if="compare(docIndex, index)" :id="'s' + doc._id">
               {{ doc.title }}
             </v-list-item-title>
+            <v-text-field 
+              v-else
+              v-model="changeTitle"
+              placeholder="Rename"
+              variant="underlined"
+              append-inner-icon="mdi-arrow-right-circle"
+              density="compact"
+              hide-details
+              autofocus
+              v-click-outside="onClickOutside"
+              :click:appendInner="rename"
+              @keyup.enter.prevent="rename"
+            ></v-text-field>
 
-            <div class="position-absolute" style="top: 50%; transform: translateY(-50%);right: 10%;">
+            <div v-if="compare(docIndex, index)" class="position-absolute" style="top: 50%; transform: translateY(-50%);right: 10%;">
               <v-menu>
                 <template #activator="{ props }">
                   <v-btn icon="mdi-dots-horizontal" size="x-small" variant="text" v-bind="props" @click.stop.prevent.self ></v-btn>
@@ -35,6 +48,7 @@
                       <v-list-item-title v-text="'Delete'"></v-list-item-title>
                     </v-list-item>
                     <v-list-item
+                      @click="clickItem(docIndex, index, doc.title, doc._id)"
                       rounded="lg"
                     >
                       <template #prepend>
@@ -83,17 +97,33 @@ interface TitleType {
   // rename: boolean
 }
 
-const { data, error, refresh } = useFetch('/api/title',{
+const { data, error, refresh } = await useFetch('/api/title',{
+  deep :false,
   transform: (data:TitleType[]) => {
     // data.forEach( da => da['rename'] = false)
     const dateGrouper = new DateGrouper();
     return dateGrouper.splitTitlesByDate(data);
   }
 })
+
+const changeTitle = ref()
+const currentObjectId = ref()
+const { execute, error:patchError } = await useLazyFetch('/api/patch/chat-session',{ 
+  method: 'PATCH',
+  immediate: false,
+  watch:false,
+  body:{
+    id: currentObjectId,
+    title: changeTitle
+  }
+})
 const { changeTrigger } = useTrigger()
 const triggerP = useTrigger()
 const { trigger } = storeToRefs(triggerP)
-const test = ref(true)
+const changeList = ref(true)
+const listId = ref()
+const parentId = ref() // 쓰읍...
+
 
 watch( trigger, async() => {
   await refresh()
@@ -111,14 +141,32 @@ const deleteChatSession = async(id:string) => {
 
   // 에러 스낵바 필요 이게 첫번째 필요성인거같은데 
 }
-const rename = async(id:string) => {
-  const success = await $fetch('/api/patch/chat-session', { 
-    method: 'PATCH',
-    body: {
-      id
-    }
-  })
+const rename = async() => {
+  await execute()
+  if(!patchError.value){
+    changeTitle.value = undefined
+  }
+  changeList.value = true
+  changeTrigger()
 }
 
+const clickItem = (index:number, parent:number, title:string, id:string) => {
+  listId.value = index
+  parentId.value = parent
+  changeTitle.value = title
+  changeList.value = false
+  currentObjectId.value = id
+}
+const onClickOutside = () => {
+  changeList.value = true
+}
+const compare = (index:number, parent:number) => {
+  if(parentId.value == parent){
+    if(listId.value == index){
+      if(!changeList.value) return false
+    }
+  }
+  return true
+}
 
 </script>

@@ -5,13 +5,21 @@ export default defineEventHandler( async(event) => {
   const body = await readBody(event)
   console.log(body)
 
-  // try{
-  //   await ChatSessionModel.updateOne({ _id: body.id })
-  //   return true
-  // }
-  // catch(e){
-  //   console.log(e)
-  //   return false
-  // }
+  try{
+    const updateChatSession = await ChatSessionModel.findByIdAndUpdate(
+      body.id,
+      { title: body.title },
+      { new: true }
+    )
+    console.log(updateChatSession, 'success update')
+    return updateChatSession
+  }
+  catch(e){
+    console.log(e)
+    throw createError({
+      statusCode: 400,
+      message: 'Update Error'
+    })
+  }
 
 })
