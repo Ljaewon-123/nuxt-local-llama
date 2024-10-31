@@ -136,7 +136,6 @@ watch( trigger, async() => {
   const targetTitle = originTitleData.value.find(titleObj => titleObj._id == route.params.id);
   if (!targetTitle) {
     navigateTo('/');
-    console.log('이동하냐?');
   }
   
 })

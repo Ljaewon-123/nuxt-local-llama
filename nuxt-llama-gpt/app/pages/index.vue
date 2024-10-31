@@ -18,11 +18,12 @@
     </div>
   </v-main>
 
-  <!-- 이놈이 좀더 free해야할거 같은데  -->
+  <!-- layout으로 이동?? -->
+  <!-- bottom-navigation을 안쓰고 callLlama를 사용할수도 있을거같아서 이동하지 않음 -->
   <v-bottom-navigation :name="'main-navigation'" height="94" elevation="0" bg-color="#ffffff00" >
     <v-row justify="center">
       <v-col cols="8">
-        <CallLlama />
+        <CallLlama @sendMessage="indexCall"/>
       </v-col>
     </v-row>
   </v-bottom-navigation>
@@ -31,7 +32,14 @@
 </template>
 
 <script setup lang="ts">
+import { useHelper } from '~/stores/useHelper';
 
+const helper = useHelper()
+const { indexSay } = storeToRefs(helper)
+
+const indexCall = (say: string) => {
+  indexSay.value = say
+}
 
 </script>
 

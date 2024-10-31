@@ -28,7 +28,8 @@ export default defineEventHandler(async(event) => {
   try{
     const answer = await session.prompt(question, {
       onTextChunk(chunk: string) {
-        io.emit('chat', chunk)
+        console.log(chunk, '현재 만들고있나 확인중...')
+        io.emit('chat', chunk)  // 가만 보니까 이거.... 전체보내기 아닌가???
       }
     })
     console.log(answer, '마지막')

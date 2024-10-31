@@ -7,12 +7,12 @@ const engine = new Engine();
 export const io = new Server();
 export default defineNitroPlugin((nitroApp: NitroApp) => {
   
-  
   io.bind(engine);
   
   io.on("connection", (socket) => {
     // your code...
-
+    console.log('hi1')
+    
     socket.on("ping", (cb) => {
       cb("pong");
     });
