@@ -5,6 +5,11 @@
       <v-app-bar-nav-icon v-if="!drawer" @click="drawer = !drawer">
         <v-icon>mdi-animation-outline</v-icon>
       </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="!drawer" @click="">
+        <NuxtLink to="/">
+          <v-icon>mdi-new-box</v-icon>
+        </NuxtLink>
+      </v-app-bar-nav-icon>
 
       <v-app-bar-title>
         llama-GPT
@@ -47,9 +52,14 @@
       permanent
     >
       <template #prepend>
-        <div class="d-flex align-center" style="height: 64px;">
+        <div class="d-flex align-center justify-space-between" style="height: 64px;">
           <v-app-bar-nav-icon @click="drawer = !drawer">
             <v-icon>mdi-animation-outline</v-icon>
+          </v-app-bar-nav-icon>
+          <v-app-bar-nav-icon >
+            <NuxtLink to="/">
+              <v-icon>mdi-new-box</v-icon>
+            </NuxtLink>
           </v-app-bar-nav-icon>
         </div>
       </template>
@@ -64,13 +74,13 @@
     </v-container>
   </v-main>
 
-  <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
+  <!-- <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
     <v-row justify="center">
       <v-col cols="8">
         <CallLlama />
       </v-col>
     </v-row>
-  </v-bottom-navigation>
+  </v-bottom-navigation> -->
 
 </div>
 </template>
