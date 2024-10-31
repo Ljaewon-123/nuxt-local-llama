@@ -13,7 +13,7 @@
       </div>
     </div>
   
-    <v-bottom-navigation   height="94" elevation="0" bg-color="#ffffff00" >
+    <v-bottom-navigation :name="'navigation' + route.params.id" height="94" elevation="0" bg-color="#ffffff00" >
       <v-row justify="center">
         <v-col cols="8">
           <CallLlama @sendMessage="callLlama"/>
@@ -47,6 +47,7 @@
       goTo(height.value)
     })
   })
+  const route = useRoute()
   
   type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
   
