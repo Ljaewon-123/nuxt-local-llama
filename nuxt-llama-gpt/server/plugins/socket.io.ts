@@ -3,6 +3,7 @@ import { Server as Engine } from "engine.io";
 import { Server } from "socket.io";
 import { defineEventHandler } from "h3";
 
+// 이거는 서버켜질때 붙이는게 맞는거같은데
 const engine = new Engine();
 export const io = new Server();
 export default defineNitroPlugin((nitroApp: NitroApp) => {
@@ -11,8 +12,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
   
   io.on("connection", (socket) => {
     // your code...
-    console.log('hi1')
-    
+
     socket.on("ping", (cb) => {
       cb("pong");
     });
