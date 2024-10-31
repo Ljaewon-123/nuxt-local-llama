@@ -45,7 +45,7 @@ const emit = defineEmits<{
 const id = useId()
 const route = useRoute()
 
-const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
+const { execute: textExecute } = useLazyFetch('/api/llama/test/create-text',{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -62,7 +62,7 @@ const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
   }
 })
 
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
+const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/test/create-title',{
   method: 'POST',
   immediate: false,
   watch: false,
@@ -108,7 +108,7 @@ const sendMessageLlama = async() => {
   
     changeTrigger() // 사이드바에 타이틀 재조정 
 
-    navigateTo(`/chat/${titleData.value}`)
+    await navigateTo(`/chat/${titleData.value}`)
   }
   
   await textExecute()

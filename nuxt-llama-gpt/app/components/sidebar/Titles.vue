@@ -132,9 +132,12 @@ console.log(route, 'current route', route.params.id, originTitleData.value)
 watch( trigger, async() => {
   await refresh()
 
-  originTitleData.value.forEach( titleObj => {
-    if(titleObj._id == route.params.id) navigateTo('/')
-  })
+  console.log(route.params.id, originTitleData.value, 'hihi')
+  const targetTitle = originTitleData.value.find(titleObj => titleObj._id == route.params.id);
+  if (!targetTitle) {
+    navigateTo('/');
+    console.log('이동하냐?');
+  }
   
 })
 
