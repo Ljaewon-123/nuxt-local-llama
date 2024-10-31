@@ -37,6 +37,16 @@
                 <v-card width="250" rounded="lg">
                   <v-list>
                     <v-list-item
+                      @click="clickItem(docIndex, index, doc.title, doc._id)"
+                      rounded="lg"
+                    >
+                      <template #prepend>
+                        <v-icon :icon="'mdi-pencil-plus-outline'"></v-icon>
+                      </template>
+
+                      <v-list-item-title v-text="'Rename'"></v-list-item-title>
+                    </v-list-item>
+                    <v-list-item
                       @click="deleteChatSession(doc._id)"
                       base-color="error"
                       rounded="lg"
@@ -46,16 +56,6 @@
                       </template>
 
                       <v-list-item-title v-text="'Delete'"></v-list-item-title>
-                    </v-list-item>
-                    <v-list-item
-                      @click="clickItem(docIndex, index, doc.title, doc._id)"
-                      rounded="lg"
-                    >
-                      <template #prepend>
-                        <v-icon :icon="'mdi-pencil-plus-outline'"></v-icon>
-                      </template>
-
-                      <v-list-item-title v-text="'Rename'"></v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -97,9 +97,12 @@ interface TitleType {
   // rename: boolean
 }
 
+// 이거 맞나 모르겠네... 이거안쓰면 hydrate때문에 워닝뜨긴하는데 
+const originTitleData = useState<TitleType[]>(('title') ,()=> [])
 const { data, error, refresh } = await useFetch('/api/title',{
   deep :false,
   transform: (data:TitleType[]) => {
+    originTitleData.value = data
     // data.forEach( da => da['rename'] = false)
     const dateGrouper = new DateGrouper();
     return dateGrouper.splitTitlesByDate(data);
@@ -108,7 +111,7 @@ const { data, error, refresh } = await useFetch('/api/title',{
 
 const changeTitle = ref()
 const currentObjectId = ref()
-const { execute, error:patchError } = await useLazyFetch('/api/patch/chat-session',{ 
+const { execute: patchExecute, error:patchError } = await useLazyFetch('/api/patch/chat-session-title',{ 
   method: 'PATCH',
   immediate: false,
   watch:false,
@@ -123,26 +126,37 @@ const { trigger } = storeToRefs(triggerP)
 const changeList = ref(true)
 const listId = ref()
 const parentId = ref() // 쓰읍...
+const route = useRoute()
 
-
+console.log(route, 'current route', route.params.id, originTitleData.value)
 watch( trigger, async() => {
   await refresh()
+
+  originTitleData.value.forEach( titleObj => {
+    if(titleObj._id == route.params.id) navigateTo('/')
+  })
+  
 })
 
 const deleteChatSession = async(id:string) => {
-  const success = await $fetch('/api/delete/chat-session', { 
-    method: 'DELETE',
-    body: {
-      id
-    }
-  })
-  
-  if(success) return changeTrigger()
+  try{
+    const success = await $fetch('/api/delete/chat-session', { 
+      method: 'DELETE',
+      body: {
+        id
+      }
+    })
+
+    if(success) return changeTrigger()
+  }
+  catch (e: any){
+    console.log(e.data.message)
+  }
 
   // 에러 스낵바 필요 이게 첫번째 필요성인거같은데 
 }
 const rename = async() => {
-  await execute()
+  await patchExecute()
   if(!patchError.value){
     changeTitle.value = undefined
   }

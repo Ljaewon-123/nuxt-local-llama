@@ -109,8 +109,6 @@ const sendMessageLlama = async() => {
     changeTrigger() // 사이드바에 타이틀 재조정 
 
     navigateTo(`/chat/${titleData.value}`)
-
-    return 
   }
   
   await textExecute()

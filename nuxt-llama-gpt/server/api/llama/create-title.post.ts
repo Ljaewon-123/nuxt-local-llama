@@ -79,5 +79,6 @@ export default defineEventHandler(async(event) => {
   await user.validate()
   await user.save();
 
+  console.log("Success cretae title")
   return newSession._id.toString()
 })

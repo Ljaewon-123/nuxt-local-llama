@@ -64,6 +64,14 @@
     </v-container>
   </v-main>
 
+  <v-bottom-navigation height="94" elevation="0" bg-color="#ffffff00" >
+    <v-row justify="center">
+      <v-col cols="8">
+        <CallLlama />
+      </v-col>
+    </v-row>
+  </v-bottom-navigation>
+
 </div>
 </template>
 
