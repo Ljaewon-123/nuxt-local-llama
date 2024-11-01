@@ -86,6 +86,14 @@
 </template>
 
 <script setup lang="ts">
+import { useSocket } from '~/stores/useSocket';
+
+// const { connectSocket } = useSocket()
+// const { data, error } = await useFetch<>('/api/auth/user-info')
+
+// if(!error.value) throw Error('Server Error')
+// connectSocket(data.value.email)
+
 const drawer = ref(true)
 
 const logout = async() => {
