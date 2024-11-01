@@ -38,20 +38,25 @@ const ChatLlama = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Llama.vue')
 ))
 
-const { $socket }  = useNuxtApp();
+const socket = useSocket()
+const { $socket } = storeToRefs(socket)
 const goTo = useGoTo()
 const chatAreaEl = ref()
 const { height } = useElementSize(chatAreaEl)
 const word = ref()
+watchEffect(() => {
+  if($socket.value){
+    console.log($socket.value, 'socket!!!')
+    $socket.value.on('chat', mess => {
+      word.value = mess 
+    })
+
+    $socket.value.on('goto', () => {
+      goTo(height.value)
+    })
+  }
+})
 onMounted(() => {
-  $socket.on('chat', mess => {
-    word.value = mess 
-  })
-
-  $socket.on('goto', () => {
-    goTo(height.value)
-  })
-
   if(indexSay.value){
     callLlama(indexSay.value)
     indexSay.value = ''

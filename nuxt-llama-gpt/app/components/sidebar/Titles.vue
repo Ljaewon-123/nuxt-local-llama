@@ -128,7 +128,7 @@ const listId = ref()
 const parentId = ref() // 쓰읍...
 const route = useRoute()
 
-console.log(route, 'current route', route.params.id, originTitleData.value)
+// console.log(route, 'current route', route.params.id, originTitleData.value)
 watch( trigger, async() => {
   await refresh()
 

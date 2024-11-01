@@ -21,6 +21,7 @@ export default defineEventHandler(async(event) => {
     contextSequence: context.getSequence(),
   });
 
+  const currentSession = await PageAuth.getCurrentSession(event)
 
   const question = body.message
   console.log('question user: ', question)
@@ -29,7 +30,7 @@ export default defineEventHandler(async(event) => {
     const answer = await session.prompt(question, {
       onTextChunk(chunk: string) {
         console.log(chunk, '현재 만들고있나 확인중...')
-        io.emit('chat', chunk)  // 가만 보니까 이거.... 전체보내기 아닌가???
+        io.to(currentSession.data.email).emit('chat', chunk)  // 가만 보니까 이거.... 전체보내기 아닌가???
       }
     })
     console.log(answer, '마지막')
@@ -47,7 +48,6 @@ export default defineEventHandler(async(event) => {
   const chatHistory = session.getChatHistory();
   console.log(chatHistory, 'chat history 저장 요소 확인 ')
   
-  const currentSession = await PageAuth.getCurrentSession(event)
 
   const user = await UsersModel.findOne({
     email: currentSession.data.email,

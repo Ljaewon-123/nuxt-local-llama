@@ -30,7 +30,8 @@ import DOMPurify from 'dompurify';
 const props = defineProps({
   word: String
 })
-const { $socket }  = useNuxtApp();
+const socket = useSocket()
+const { $socket } = storeToRefs(socket)
 
 const answer = ref("")
 const parsedAnswer = ref();
@@ -50,7 +51,8 @@ watchEffect(async () => {
 const loading = ref(true)
 
 onMounted(() => {
-  $socket.on('chat', mess => {
+  if(!$socket.value) throw Error('Socket Connect Error')
+  $socket.value.on('chat', mess => {
     loading.value = false
   })
 })

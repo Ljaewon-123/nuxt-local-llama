@@ -1,7 +1,5 @@
 export default defineEventHandler( async event => {
   
-  const config = useRuntimeConfig(event)
-
   const session = await PageAuth.createSession(event)
 
   if(!session.id) throw 'User not login'

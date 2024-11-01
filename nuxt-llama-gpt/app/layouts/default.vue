@@ -86,13 +86,31 @@
 </template>
 
 <script setup lang="ts">
+import { CustomHttpCode } from '~/common/custom-http-code';
 import { useSocket } from '~/stores/useSocket';
 
-// const { connectSocket } = useSocket()
-// const { data, error } = await useFetch<>('/api/auth/user-info')
+interface UserSeesion{
+  id: string
+  email: string
+}
+const { connectSocket } = useSocket()
+const { data, error } = await useFetch<UserSeesion>('/api/auth/user-info',{
+  onResponseError: ({ response }) => {
+    const { status } = response
+    const { openModal } = usePageAuth()
+    
+    if(status == CustomHttpCode.LoginSessionInvailed) {
+      openModal()
+    }
+  }
+})
 
-// if(!error.value) throw Error('Server Error')
-// connectSocket(data.value.email)
+// 왜 page가 먼저 랜더링되는거지?? 왜?
+onMounted(() => {
+  console.log(data.value, '@@')
+  if(!data.value) throw Error('Server Error')
+  connectSocket(data.value.email)
+})
 
 const drawer = ref(true)
 

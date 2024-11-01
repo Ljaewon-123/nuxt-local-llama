@@ -12,6 +12,8 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
   
   io.on("connection", (socket) => {
     // your code...
+    console.log(socket.handshake.query.roomName)
+    io.socketsJoin(socket.handshake.query.roomName as string)
 
     socket.on("ping", (cb) => {
       cb("pong");

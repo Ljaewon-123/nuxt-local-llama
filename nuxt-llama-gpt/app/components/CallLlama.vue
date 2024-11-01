@@ -45,7 +45,7 @@ const emit = defineEmits<{
 const id = useId()
 const route = useRoute()
 
-const { execute: textExecute } = useLazyFetch('/api/llama/test/create-text',{
+const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -62,7 +62,7 @@ const { execute: textExecute } = useLazyFetch('/api/llama/test/create-text',{
   }
 })
 
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/test/create-title',{
+const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
   method: 'POST',
   immediate: false,
   watch: false,
