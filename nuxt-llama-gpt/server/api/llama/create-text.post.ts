@@ -29,8 +29,7 @@ export default defineEventHandler(async(event) => {
   try{
     const answer = await session.prompt(question, {
       onTextChunk(chunk: string) {
-        console.log(chunk, '현재 만들고있나 확인중...')
-        io.to(currentSession.data.email).emit('chat', chunk)  // 가만 보니까 이거.... 전체보내기 아닌가???
+        io.to(currentSession.data.email).emit('chat', chunk) 
       }
     })
     console.log(answer, '마지막')
@@ -54,9 +53,9 @@ export default defineEventHandler(async(event) => {
   })
   if(!user) throw Error('User not found')
 
-  const chatSession = await ChatSessionModel
-                        .findOne({ email: user._id })
-                        .populate('histories');
+  // 정확하게 방금 만든 세션만 가져와야함 최근 세션만 가져오기 
+  // 이게 버그가 난다면 유저 컬렉션조회하고 거기 세션에서 .at(-1)
+  const chatSession = await ChatSessionModel.findOne({ email: user._id }).sort({ updatedAt: -1 })
 
   const historyModel = new ChatHistoryModel({
     email: currentSession.data.email,
@@ -64,13 +63,13 @@ export default defineEventHandler(async(event) => {
     session: chatSession
   });
 
+  await historyModel.validate()
+  await historyModel.save()
+  
   chatSession?.histories.push(historyModel._id)
   
   await chatSession?.validate()
   await chatSession?.save()
-
-  await historyModel.validate()
-  await historyModel.save()
 
   return { successCode: 1 }
 })

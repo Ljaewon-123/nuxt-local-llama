@@ -109,7 +109,7 @@ const sendMessageLlama = async() => {
     changeTrigger() // 사이드바에 타이틀 재조정 
 
     await navigateTo(`/chat/${titleData.value}`)
-    return
+    // return
   }
 
   // 결국 별개의 컴포넌트 실행이라 내부에서는 해줄게 없다.

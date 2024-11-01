@@ -38,6 +38,7 @@ export default defineEventHandler(async(event) => {
   await historyModel.save()
   
   chatSession?.histories.push(historyModel._id)
+  console.log('chat -text 확인 ')
   
   await chatSession?.validate()
   await chatSession?.save()

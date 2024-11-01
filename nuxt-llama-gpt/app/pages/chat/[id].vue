@@ -58,6 +58,7 @@ watchEffect(() => {
 })
 onMounted(() => {
   if(indexSay.value){
+    console.log('너뭐해 ', indexSay.value)
     callLlama(indexSay.value)
     indexSay.value = ''
   }
