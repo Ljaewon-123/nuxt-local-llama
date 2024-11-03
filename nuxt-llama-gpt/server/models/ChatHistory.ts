@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
-interface Chat {
+export interface Chat {
   email: string;
   messages: {
     type: string;
-    text?: string;
-    response?: string[];
+    text: string;
+    response: string[];
   }[];
 }
 

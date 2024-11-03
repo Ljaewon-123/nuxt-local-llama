@@ -9,6 +9,7 @@
       :is="content.component" 
       :saying="content.saying" 
       :word="isLastComponent(index) ? word : ''"
+      :isLoading="content.loading"
       ></component>
     </div>
   </div>
@@ -27,16 +28,21 @@
 <script setup lang="ts">
 import type { DefineComponent } from 'vue';
 import { useHelper } from '~/stores/useHelper';
-
-const helper = useHelper()
-const { indexSay } = storeToRefs(helper)
-
+import type { Chat } from '~~/server/models/ChatHistory';
+type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string, loading?: boolean }
 const ChatClient = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Client.vue')
 ))
 const ChatLlama = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Llama.vue')
 ))
+
+const route = useRoute()
+const { data, error } = useFetch<Chat[]>(`/api/chat-sssion/${route.params.id}`)
+console.log(data.value)
+
+const helper = useHelper()
+const { indexSay } = storeToRefs(helper)
 
 const socket = useSocket()
 const { $socket } = storeToRefs(socket)
@@ -62,25 +68,41 @@ onMounted(() => {
     callLlama(indexSay.value)
     indexSay.value = ''
   }
-})
-const route = useRoute()
+  if(data.value){
+    data.value.forEach( history => {
+      contentList.value.push({
+        component: ChatClient,
+        saying: history.messages[1]?.text,
+      })
+      contentList.value.push({
+        component: ChatLlama as any,
+        saying: history.messages[2]?.response[0],
+        loading:false
+      })
+      console.log(history.messages[2]?.response[0])
+      // history.messages[1] // user
+      // history.messages[2] // say llama
+    })
+  }
 
-type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string }
+})
 
 const contentList = ref<ChatArea[]>([])
+
 
 // 클라입력 직후에 바로 ai 답변대기 표시를 하고 그 다음에 socket으로 답변을 받는다.
 const callLlama = async(say: string) => {
   contentList.value.push({
     component: ChatClient,
     saying: say,
+    loading: false
   })
 
   word.value = ''
   await delay(100) // 혹시 모르니 딜레이 살짝줌 
 
   contentList.value.push({
-    component: ChatLlama,
+    component: ChatLlama as any,
   })
 
   await delay(1000)

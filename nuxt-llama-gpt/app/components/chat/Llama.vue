@@ -28,7 +28,9 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
 const props = defineProps({
-  word: String
+  word: String,
+  isLoadgin: Boolean,
+  saying: String
 })
 const socket = useSocket()
 const { $socket } = storeToRefs(socket)
@@ -49,6 +51,11 @@ watchEffect(async () => {
   parsedAnswer.value = DOMPurify.sanitize(await marked(answer.value)); // 마크다운을 HTML로 변환 xss예방 
 })
 const loading = ref(true)
+
+if(!props.isLoadgin) {
+  answer.value = props.saying ?? '채팅기록을 불러오는데 실패했습니다.'
+  loading.value = false
+}
 
 onMounted(() => {
   if(!$socket.value) throw Error('Socket Connect Error')

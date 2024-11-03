@@ -1,3 +1,5 @@
+import { LoginSessionInvailed } from "~~/server/common/http-code/login-session-invailed"
+
 export default defineEventHandler( async event => {
   
   const config = useRuntimeConfig(event)
@@ -10,11 +12,7 @@ export default defineEventHandler( async event => {
 
   if (!verification) {
     console.log(" rejected 띄우기전!!@!@", session, "verify",verification)
-    throw createError({
-      statusCode: 498,
-      statusMessage: 'Page Rejected',
-      message: 'Page Rejected'
-    })
+    throw createError(new LoginSessionInvailed)
   }
 
   // 갱신

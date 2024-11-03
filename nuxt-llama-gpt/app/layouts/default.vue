@@ -108,7 +108,7 @@ const { data, error } = await useFetch<UserSeesion>('/api/auth/user-info',{
 // 왜 page가 먼저 랜더링되는거지?? 왜?
 onMounted(() => {
   console.log(data.value, '@@')
-  if(!data.value) throw Error('Server Error')
+  if(!data.value) return console.error('Session invailed')//throw Error('Server Error')
   connectSocket(data.value.email)
 })
 
