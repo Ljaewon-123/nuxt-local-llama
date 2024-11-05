@@ -29,16 +29,17 @@
 import type { DefineComponent } from 'vue';
 import { useHelper } from '~/stores/useHelper';
 import type { Chat } from '~~/server/models/ChatHistory';
-type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string, loading?: boolean }
 const ChatClient = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Client.vue')
 ))
 const ChatLlama = markRaw(defineAsyncComponent(() =>
   import('~/components/chat/Llama.vue')
 ))
+type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string, loading?: boolean }
 
 const route = useRoute()
-const { data, error } = useFetch<Chat[]>(`/api/chat-sssion/${route.params.id}`)
+const { data, error, execute } = useFetch<Chat[]>(`/api/chat-sssion/${route.params.id}`)
+await execute() // 솔직히 이해안되네 워닝은 
 console.log(data.value)
 
 const helper = useHelper()
@@ -63,11 +64,13 @@ watchEffect(() => {
   }
 })
 onMounted(() => {
+  // index에서 넘어올때 작동
   if(indexSay.value){
     console.log('너뭐해 ', indexSay.value)
     callLlama(indexSay.value)
     indexSay.value = ''
   }
+  // 세션을 누르고 들어올때 작동 
   if(data.value){
     data.value.forEach( history => {
       contentList.value.push({
@@ -95,7 +98,6 @@ const callLlama = async(say: string) => {
   contentList.value.push({
     component: ChatClient,
     saying: say,
-    loading: false
   })
 
   word.value = ''
@@ -103,6 +105,7 @@ const callLlama = async(say: string) => {
 
   contentList.value.push({
     component: ChatLlama as any,
+    loading: true
   })
 
   await delay(1000)

@@ -29,7 +29,7 @@ import DOMPurify from 'dompurify';
 
 const props = defineProps({
   word: String,
-  isLoadgin: Boolean,
+  isLoading: Boolean,
   saying: String
 })
 const socket = useSocket()
@@ -52,7 +52,7 @@ watchEffect(async () => {
 })
 const loading = ref(true)
 
-if(!props.isLoadgin) {
+if(!props.isLoading) {
   answer.value = props.saying ?? '채팅기록을 불러오는데 실패했습니다.'
   loading.value = false
 }

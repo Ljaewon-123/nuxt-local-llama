@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs/promises";
 import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
 import { io } from "~~/server/plugins/socket.io"
 import ChatHistoryModel from "~~/server/models/ChatHistory";
@@ -6,11 +7,13 @@ import ChatSessionModel from "~~/server/models/ChatSession";
 import UsersModel from "~~/server/models/Users";
 
 export default defineEventHandler(async(event) => {
-
   const config = useRuntimeConfig()
   const rootPath = config.public.rootPath
   const llamaName = config.llamaName
+
   const body = await readBody<{ message: string }>(event)
+  const params = getRouterParams(event)
+
   const llama = await getLlama();
   const model = await llama.loadModel({
     modelPath: path.join(rootPath, "aimodels", llamaName + ".gguf")
@@ -26,13 +29,29 @@ export default defineEventHandler(async(event) => {
   const question = body.message
   console.log('question user: ', question)
 
+  // _id 유니크라서 email없어도 괜찮을거라는 판단.
+  // lean을 사용하면 mongo docs가 아니고 lean을 사용하지않으면 setChatHistory에 안들어간다 문서에는 js객체를 문서로 만드는 법은 없는거같은데 
+  const chatRestore = await ChatSessionModel.findOne({ _id: params.id })
+                                            .populate('histories')
+                                            .lean();
+
+  const chatSession = await ChatSessionModel.findOne({ _id: params.id })
+
+  const restoreHistory = chatRestore?.histories
+  if(restoreHistory){
+    const allMessages = restoreHistory.reduce((acc, item: any) => acc.concat(item.messages), [] as any[]);
+    // [request error] [unhandled] [500] [object Array] could not be cloned.
+    session.setChatHistory(allMessages);
+  }
+
+
   try{
     const answer = await session.prompt(question, {
       onTextChunk(chunk: string) {
         io.to(currentSession.data.email).emit('chat', chunk) 
       }
     })
-    console.log(answer, '마지막')
+    // console.log(answer, '마지막')
   }
   catch{
     throw createError({
@@ -46,31 +65,34 @@ export default defineEventHandler(async(event) => {
 
   const chatHistory = session.getChatHistory();
   console.log(chatHistory, 'chat history 저장 요소 확인 ')
-  
-
-  const user = await UsersModel.findOne({
-    email: currentSession.data.email,
-  })
-  if(!user) throw Error('User not found')
-
-  // 정확하게 방금 만든 세션만 가져와야함 최근 세션만 가져오기 
-  // 이게 버그가 난다면 유저 컬렉션조회하고 거기 세션에서 .at(-1)
-  const chatSession = await ChatSessionModel.findOne({ email: user._id }).sort({ updatedAt: -1 })
 
   const historyModel = new ChatHistoryModel({
     email: currentSession.data.email,
-    messages: chatHistory,
+    messages: chatHistory.at(-1),
     session: chatSession
   });
 
-  await historyModel.validate()
-  await historyModel.save()
+  try{
+    await historyModel.validate()
+    await historyModel.save()
+  }
+  catch(e){
+    console.error('historyModel 저장실패', e)
+    throw Error('Chat Save Fail')
+  }
   
   chatSession?.histories.push(historyModel._id)
   
-  await chatSession?.validate()
-  await chatSession?.save()
+  try{
+    await chatSession?.validate()
+    await chatSession?.save()
+  }
+  catch(e){
+    console.error('chatSession 저장실패', e)
+    throw Error('Chat Save Fail')
+  }
 
+  console.log('success text')
   return { successCode: 1 }
 })
 

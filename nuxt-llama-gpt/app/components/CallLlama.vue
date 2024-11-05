@@ -44,14 +44,16 @@ const emit = defineEmits<{
 }>()
 const id = useId()
 const route = useRoute()
+const currentDocs = ref()
 
-const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
+const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
   method: 'POST',
-  watch: false,
   immediate: false,
+  watch: false,
   body:{
-    message: llamaInput  // input에 있는 text미리 없애기 
+    message: llamaInput
   },
+  transform: title => title ?? 'New Chat',
   onResponseError: ({ request, response, options }) => {
     const { status } = response
     const { openModal } = usePageAuth()
@@ -62,14 +64,17 @@ const { execute: textExecute } = useLazyFetch('/api/llama/create-text',{
   }
 })
 
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
+/**
+ * 페이지마다 똑같은 코드 쓰기싫어서 컴포넌트 내부에 넣었는데 문제가 꽤나있다... 상당히 번거롭다.
+ * `/api/llama/create-text/${currentDocs.value}`
+ */
+const { execute: textExecute } = useLazyFetch(() => "/api/llama/example/test-restore-chat-history",{
   method: 'POST',
-  immediate: false,
   watch: false,
+  immediate: false,
   body:{
-    message: llamaInput
+    message: llamaInput  // input에 있는 text미리 없애기 
   },
-  transform: title => title ?? 'New Chat',
   onResponseError: ({ request, response, options }) => {
     const { status } = response
     const { openModal } = usePageAuth()
@@ -111,7 +116,10 @@ const sendMessageLlama = async() => {
     await navigateTo(`/chat/${titleData.value}`)
     // return
   }
-
+  
+  // 결국 _id가 필요해져서 이런 방법을 사용한다 컴포넌트 내부에 있어서 생김
+  currentDocs.value = route.params.id ?? titleData.value
+  console.log(currentDocs.value, 'params id')
   // 결국 별개의 컴포넌트 실행이라 내부에서는 해줄게 없다.
   await textExecute()
 }
