@@ -128,11 +128,9 @@ const listId = ref()
 const parentId = ref() // 쓰읍...
 const route = useRoute()
 
-// console.log(route, 'current route', route.params.id, originTitleData.value)
 watch( trigger, async() => {
   await refresh()
 
-  console.log(route.params.id, originTitleData.value, 'hihi')
   const targetTitle = originTitleData.value.find(titleObj => titleObj._id == route.params.id);
   if (!targetTitle) {
     navigateTo('/');
@@ -177,10 +175,8 @@ const onClickOutside = () => {
   changeList.value = true
 }
 const compare = (index:number, parent:number) => {
-  if(parentId.value == parent){
-    if(listId.value == index){
-      if(!changeList.value) return false
-    }
+  if(parentId.value == parent && listId.value == index){
+    if(!changeList.value) return false
   }
   return true
 }

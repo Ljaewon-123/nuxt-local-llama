@@ -61,14 +61,14 @@ export default defineEventHandler(async(event) => {
   }
 
   // 모든 입력이 끝나고 화면을 가장 아래로 내려줌 
-  io.emit('goto', true)
+  io.to(currentSession.data.email).emit('goto', true)
 
   const chatHistory = session.getChatHistory();
   console.log(chatHistory, 'chat history 저장 요소 확인 ')
 
   const historyModel = new ChatHistoryModel({
     email: currentSession.data.email,
-    messages: chatHistory.at(-1),
+    messages: chatHistory.slice(-2),
     session: chatSession
   });
 

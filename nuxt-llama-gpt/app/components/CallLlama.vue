@@ -68,7 +68,7 @@ const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFet
  * 페이지마다 똑같은 코드 쓰기싫어서 컴포넌트 내부에 넣었는데 문제가 꽤나있다... 상당히 번거롭다.
  * `/api/llama/create-text/${currentDocs.value}`
  */
-const { execute: textExecute } = useLazyFetch(() => "/api/llama/example/test-restore-chat-history",{
+const { execute: textExecute } = useLazyFetch(() => `/api/llama/create-text/${currentDocs.value}`,{
   method: 'POST',
   watch: false,
   immediate: false,
@@ -86,7 +86,7 @@ const { execute: textExecute } = useLazyFetch(() => "/api/llama/example/test-res
 })
 
 const emitInput = () => {
-  console.log('Test method called:', userInput.value)
+  // console.log('Test method called:', userInput.value)
   emit('sendMessage', userInput.value)
   llamaInput.value = userInput.value
   userInput.value = ''

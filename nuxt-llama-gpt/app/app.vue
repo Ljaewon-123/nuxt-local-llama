@@ -28,11 +28,11 @@ const { dialog } = storeToRefs(usePageAuth())
 
 onMounted(() => {
   const initWath = watch(colorMode ,(val) => {
-    console.log( val , ' server value ')
+    // console.log( val , ' server value ')
     if(!val.unknown){
       setTimeout(() => {
         cookieTheme.value = val.value as Theme
-        console.log('change? in watch', cookieTheme.value)
+        // console.log('change? in watch', cookieTheme.value)
       }, 500)
     }
   },{ flush: 'post', once: true })
@@ -40,7 +40,7 @@ onMounted(() => {
 
   
   setTimeout(() => {
-    console.log('allWatch exit')
+    // console.log('allWatch exit')
     unwatch()
     initWath()
   }, 5000)

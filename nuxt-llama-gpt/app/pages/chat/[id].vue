@@ -53,7 +53,6 @@ const { height } = useElementSize(chatAreaEl)
 const word = ref()
 watchEffect(() => {
   if($socket.value){
-    console.log($socket.value, 'socket!!!')
     $socket.value.on('chat', mess => {
       word.value = mess 
     })
@@ -66,27 +65,33 @@ watchEffect(() => {
 onMounted(() => {
   // index에서 넘어올때 작동
   if(indexSay.value){
-    console.log('너뭐해 ', indexSay.value)
+    // console.log('너뭐해 ', indexSay.value)
     callLlama(indexSay.value)
     indexSay.value = ''
   }
   // 세션을 누르고 들어올때 작동 
-  if(data.value){
-    data.value.forEach( history => {
-      contentList.value.push({
-        component: ChatClient,
-        saying: history.messages[1]?.text,
-      })
-      contentList.value.push({
-        component: ChatLlama as any,
-        saying: history.messages[2]?.response[0],
-        loading:false
-      })
-      console.log(history.messages[2]?.response[0])
-      // history.messages[1] // user
-      // history.messages[2] // say llama
+  if(!data.value) return 
+  
+  data.value.forEach(history => {
+    history.messages.forEach(message => {
+      if (message.type === 'user') {
+        contentList.value.push({
+          component: ChatClient,
+          saying: message.text,
+        });
+      } 
+      else if (message.type === 'model') {
+        contentList.value.push({
+          component: ChatLlama as any,
+          saying: message.response?.[0],
+          loading: false,
+        })
+      }
     })
-  }
+    // history.messages[1] // user
+    // history.messages[2] // say llama
+  })
+
 
 })
 
