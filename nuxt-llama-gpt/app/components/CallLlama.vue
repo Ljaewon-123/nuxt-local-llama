@@ -2,7 +2,8 @@
 <v-card 
 rounded="pill" 
 density="compact" 
-class="d-flex align-center pa-3">
+class="d-flex align-center pa-3 border-sm"
+>
   <v-icon>mdi-paperclip</v-icon>
   <v-textarea
     :id="id"
