@@ -1,5 +1,5 @@
 <template>
-  <v-app :theme="cookieTheme ? 'dark' : 'light'" >
+  <v-app :theme="cookieTheme ? cookieTheme : 'dark'" >
     <NuxtRouteAnnouncer />
     <NuxtLoadingIndicator />
     <NuxtLayout>
@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Theme } from './types/Theme.type';
 
-type Theme = "dark" | "light";
 const colorMode = useColorMode()
 const cookieTheme = useCookie<Theme>('color-scheme')
 

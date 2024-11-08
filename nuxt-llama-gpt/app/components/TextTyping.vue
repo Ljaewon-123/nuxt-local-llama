@@ -1,11 +1,13 @@
 <template>
   <div class="container" >
     <span class="font-setup first-text">{{ props.defaultText }}</span>
-    <span class="font-setup text sec-text text-color-back">{{ text }}</span>
+    <span :class="cookieTheme" class="font-setup text sec-text text-color-back">{{ text }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Theme } from '~/types/Theme.type';
+
 const props = defineProps({
   texts: {
     type: Array<String>,
@@ -15,12 +17,13 @@ const props = defineProps({
     type: String,
     default: "I'm a"
   },
-  secColor: {
+  accentColor: {
     type: String,
     default: '#4070F4'
   }
 })
 
+const cookieTheme = useCookie<Theme>('color-scheme')
 const DEFAULT_SEQ = 4000
 const text = ref('')
 const seq = computed(() => props.texts.length)
@@ -49,7 +52,7 @@ onUnmounted(() => clearInterval(timeoutId.value))
 }
 .container .text{
   position: relative;
-  color: v-bind(secColor);
+  color: v-bind(accentColor);
 }
 .font-setup{
   font-size: 3rem;
@@ -65,9 +68,14 @@ onUnmounted(() => clearInterval(timeoutId.value))
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: #111111;
-  border-left: 2px solid v-bind(secColor);
+  border-left: 2px solid v-bind(accentColor);
   animation: animate 4s steps(12) infinite;
+}
+.dark.text.sec-text:before{
+  background-color:  #111111;
+}
+.light.text.sec-text:before{
+  background-color:  #ffffff;
 }
 @keyframes animate{
   40%, 60%{
