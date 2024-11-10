@@ -23,7 +23,7 @@
   <v-bottom-navigation :name="'main-navigation'" height="94" elevation="0" bg-color="#ffffff00" >
     <v-row justify="center">
       <v-col cols="8">
-        <CallLlama @sendMessage="indexCall"/>
+        <CallLlama v-model="userInput" @sendMessage="createText"/>
       </v-col>
     </v-row>
   </v-bottom-navigation>
@@ -41,14 +41,44 @@
   ## 페이지를 클릭해서 들어갈때와 index에서 fatching을 하고 넘어갈때를 구분해서 동작시켜야함 
 */
 
+import { CustomHttpCode } from '~/common/custom-http-code';
 import { useHelper } from '~/stores/useHelper';
 
-
+const userInput = ref()
+const { changeTrigger } = useTrigger()
 const helper = useHelper()
 const { indexSay } = storeToRefs(helper)
 
-const indexCall = (say: string) => {
-  indexSay.value = say
+const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
+  method: 'POST',
+  immediate: false,
+  watch: false,
+  body:{
+    message: userInput
+  },
+  transform: title => title ?? 'New Chat',
+  onResponseError: ({ request, response, options }) => {
+    const { status } = response
+    const { openModal } = usePageAuth()
+    
+    if(status == CustomHttpCode.LoginSessionInvailed) {
+      openModal()
+    }
+  }
+})
+
+
+const createText = async() => {
+  // indexSay 필요할지도...
+  indexSay.value = userInput.value
+
+  await titleExecute()
+
+  if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
+
+  changeTrigger() // 사이드바에 타이틀 재조정 하는데 사용여기서는 
+
+  await navigateTo(`/chat/${titleData.value}`)
 }
 
 </script>

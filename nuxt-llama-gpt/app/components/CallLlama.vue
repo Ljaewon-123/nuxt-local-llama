@@ -37,60 +37,16 @@ class="d-flex align-center pa-3 border-sm"
 import { CustomHttpCode } from '~/common/custom-http-code';
 import { useTrigger } from '~/stores/useTrigger';
 
-const { changeTrigger } = useTrigger()
-const userInput = ref()
-const llamaInput = ref()
 const emit = defineEmits<{
-  (e: 'sendMessage', input: string): void
+  (e: 'sendMessage'): void
 }>()
 const id = useId()
-const route = useRoute()
-const currentDocs = ref()
 
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
-  method: 'POST',
-  immediate: false,
-  watch: false,
-  body:{
-    message: llamaInput
-  },
-  transform: title => title ?? 'New Chat',
-  onResponseError: ({ request, response, options }) => {
-    const { status } = response
-    const { openModal } = usePageAuth()
-    
-    if(status == CustomHttpCode.LoginSessionInvailed) {
-      openModal()
-    }
-  }
-})
-
-/**
- * 페이지마다 똑같은 코드 쓰기싫어서 컴포넌트 내부에 넣었는데 문제가 꽤나있다... 상당히 번거롭다.
- * `/api/llama/create-text/${currentDocs.value}`
- */
-const { execute: textExecute } = useLazyFetch(() => `/api/llama/create-text/${currentDocs.value}`,{
-  method: 'POST',
-  watch: false,
-  immediate: false,
-  body:{
-    message: llamaInput  // input에 있는 text미리 없애기 
-  },
-  onResponseError: ({ request, response, options }) => {
-    const { status } = response
-    const { openModal } = usePageAuth()
-    
-    if(status == CustomHttpCode.LoginSessionInvailed) {
-      openModal()
-    }
-  }
-})
+const userInput = defineModel()
 
 const emitInput = () => {
-  // console.log('Test method called:', userInput.value)
-  emit('sendMessage', userInput.value)
-  llamaInput.value = userInput.value
-  userInput.value = ''
+  emit('sendMessage')
+  userInput.value = '' // 초기화를 여기서..???
 }
 
 const handleKeydown = async(event: KeyboardEvent) => {
@@ -98,31 +54,12 @@ const handleKeydown = async(event: KeyboardEvent) => {
     // Shift 없이 Enter를 누른 경우
     event.preventDefault() // 기본 개행 동작 방지
     emitInput() // 메서드 호출
-    
-    await sendMessageLlama() // llama 호출 
+
+    // await sendMessageLlama() // llama 호출 
 
     return
   }
 }
 
-const sendMessageLlama = async() => {
-  // route가 "/"면 초기 페이지로 여기서 입력하게 되면 제목을 생성한후 해당 params로 이동 
-  // chat/id 라면 text생성만 
-  if(route.name == 'index'){
-    await titleExecute()
-    if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
-  
-    changeTrigger() // 사이드바에 타이틀 재조정 
-
-    await navigateTo(`/chat/${titleData.value}`)
-    // return
-  }
-  
-  // 결국 _id가 필요해져서 이런 방법을 사용한다 컴포넌트 내부에 있어서 생김
-  currentDocs.value = route.params.id ?? titleData.value
-  console.log(currentDocs.value, 'params id')
-  // 결국 별개의 컴포넌트 실행이라 내부에서는 해줄게 없다.
-  await textExecute()
-}
 
 </script>
