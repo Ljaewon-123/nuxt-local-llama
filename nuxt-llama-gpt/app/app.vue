@@ -12,7 +12,7 @@
       width="auto"
       persistent
     >
-      <AuthTimeoutModal v-model="dialog" />
+      <component :is="type == 'auth' ? AuthTimeoutModal : EntireLoading" v-model="dialog" />
     </v-dialog>
 
   </v-app>
@@ -20,11 +20,17 @@
 
 <script setup lang="ts">
 import type { Theme } from './types/Theme.type';
+const AuthTimeoutModal = markRaw(defineAsyncComponent(() =>
+  import('~/components/AuthTimeoutModal.vue')
+))
+const EntireLoading = markRaw(defineAsyncComponent(() =>
+  import('~/components/EntireLoading.vue')
+))
 
 const colorMode = useColorMode()
 const cookieTheme = useCookie<Theme>('color-scheme')
 
-const { dialog } = storeToRefs(usePageAuth())
+const { dialog, type } = storeToRefs(useGlobalDialog())
 
 onMounted(() => {
   const initWath = watch(colorMode ,(val) => {

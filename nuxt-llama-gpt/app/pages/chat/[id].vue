@@ -69,7 +69,7 @@ const { execute: textExecute } = useLazyFetch(() => `/api/llama/create-text/${ro
   },
   onResponseError: ({ request, response, options }) => {
     const { status } = response
-    const { openModal } = usePageAuth()
+    const { openModal } = useGlobalDialog()
     
     if(status == CustomHttpCode.LoginSessionInvailed) {
       openModal()

@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 const dialog = defineModel({ default: false })
-const { title, text } = usePageAuth()
+const { title, text } = useGlobalDialog()
 const goLoginPage = () => {
   navigateTo('/login')
 }

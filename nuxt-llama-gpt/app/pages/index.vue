@@ -32,23 +32,15 @@
 </template>
 
 <script setup lang="ts">
-/*
-  useHelper 삭제하는게 목표, 근본이 되었던 route.name == index 페이지 에서 특정 세션 페이지로 넘어갈때에 로직을 정리한다.
-  지금은 llama한테 보내는 fatch 자체가 CallLlama내부에 있어서 ( create-title, create-text )
-  router가 이동하면서 하는 특정 동작이 굉장히 어거지스럽고 부자연스러운데 이것을 고치는게 목표다 ( 오래걸리기까지함 )
-  fatching 코드를 내부가 아니라 라우터에서 동작하게 하고 각각 로직을 나눈다. 
-  인덱스에서 동작시 title매서드를 보내고 로딩을 띄워줌 title이 완료되면 왼쪽에 세션을 만들고 페이지를 이동함 그후 페이지를 이동해서 text동작 
-  ## 페이지를 클릭해서 들어갈때와 index에서 fatching을 하고 넘어갈때를 구분해서 동작시켜야함 
-*/
-
 import { CustomHttpCode } from '~/common/custom-http-code';
 import { useHelper } from '~/stores/useHelper';
 
+const { openModal, closeModal } = useGlobalDialog()
 const { changeTrigger } = useTrigger()
 const helper = useHelper()
 const { indexSay } = storeToRefs(helper)
 const userInput = ref()
-const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFetch('/api/llama/create-title',{
+const { data: titleData ,error: titleError, execute: titleExecute, status } = useLazyFetch('/api/llama/create-title',{
   method: 'POST',
   immediate: false,
   watch: false,
@@ -58,7 +50,7 @@ const { data: titleData ,error: titleError, execute: titleExecute } = useLazyFet
   transform: title => title ?? 'New Chat',
   onResponseError: ({ request, response, options }) => {
     const { status } = response
-    const { openModal } = usePageAuth()
+    const { openModal } = useGlobalDialog()
     
     if(status == CustomHttpCode.LoginSessionInvailed) {
       openModal()
@@ -80,6 +72,14 @@ const createText = async(say: string) => {
   console.log('AI 컴퓨터 메모리 에러만 아니면 정상동작한다.')
   await navigateTo(`/chat/${titleData.value}`)
 }
+
+// pending중에만 띄우고 결과가 나오면 닫음 idle(시작전) 에는 동작안함 
+watchEffect(() => {
+  closeModal()
+  if(status.value == 'pending'){
+    openModal('entireLoading')
+  }
+})
 
 </script>
 

@@ -97,7 +97,7 @@ const { connectSocket } = useSocket()
 const { data, error } = await useFetch<UserSeesion>('/api/auth/user-info',{
   onResponseError: ({ response }) => {
     const { status } = response
-    const { openModal } = usePageAuth()
+    const { openModal } = useGlobalDialog()
     
     if(status == CustomHttpCode.LoginSessionInvailed) {
       openModal()

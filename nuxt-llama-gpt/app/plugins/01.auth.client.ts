@@ -5,7 +5,7 @@ export default defineNuxtPlugin(() => {
     console.log('global auth plugins middleware only client')
     if(to.name == 'login') return
     
-    const { dialog } = storeToRefs(usePageAuth())
+    const { dialog } = storeToRefs(useGlobalDialog())
 
     const { error } = await useFetch("/api/auth/page-auth",{
       server: false,
