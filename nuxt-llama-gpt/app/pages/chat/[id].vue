@@ -49,6 +49,7 @@ const { data, error, execute } = useFetch<Chat[]>(`/api/chat-sssion/${route.para
 await execute() // 솔직히 이해안되네 워닝은 
 console.log(data.value)
 
+const { changeTrigger } = useTrigger()
 const helper = useHelper()
 const { indexSay } = storeToRefs(helper)
 const socket = useSocket()
@@ -146,6 +147,8 @@ const callLlama = async(say: string) => {
 
   // goto 후에 했던거 같은데 
   await textExecute()
+
+  changeTrigger() // 최근 세션 위로 올리는 과정이라고 생각함 (DB에서 sort하는게 아니라 뽑아서 sort하는게 좋았을라나...)
 }
 
 
