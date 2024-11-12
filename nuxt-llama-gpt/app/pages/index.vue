@@ -77,7 +77,7 @@ const createText = async(say: string) => {
   if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
 
   changeTrigger() // 사이드바에 타이틀 재조정 하는데 사용여기서는 
-  console.log('움직여라 ~~~~~~~~')
+  console.log('AI 컴퓨터 메모리 에러만 아니면 정상동작한다.')
   await navigateTo(`/chat/${titleData.value}`)
 }
 
