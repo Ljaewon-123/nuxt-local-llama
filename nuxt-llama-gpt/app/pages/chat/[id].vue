@@ -17,7 +17,7 @@
   <v-bottom-navigation :name="'navigation' + route.params.id" height="94" elevation="0" bg-color="#ffffff00" >
     <v-row justify="center">
       <v-col cols="8">
-        <CallLlama v-model="userInput" @sendMessage="callLlama"/>
+        <CallLlama @sendMessage="callLlama"/>
       </v-col>
     </v-row>
   </v-bottom-navigation>
@@ -57,15 +57,14 @@ const goTo = useGoTo()
 const chatAreaEl = ref()
 const { height } = useElementSize(chatAreaEl)
 
-const userInput = ref()
 const word = ref()
-
+const fatchInput = ref()
 const { execute: textExecute } = useLazyFetch(() => `/api/llama/create-text/${route.params.id}`,{
   method: 'POST',
   watch: false,
   immediate: false,
   body:{
-    message: userInput  // input에 있는 text미리 없애기 
+    message: fatchInput  // input에 있는 text미리 없애기 
   },
   onResponseError: ({ request, response, options }) => {
     const { status } = response
@@ -88,11 +87,10 @@ watchEffect(() => {
     })
   }
 })
-onMounted(() => {
+onMounted(async () => {
   // index에서 넘어올때 작동 => 필요할지도...
   if(indexSay.value){
-    userInput.value = indexSay.value
-    callLlama()
+    await callLlama(indexSay.value)
     indexSay.value = ''
   }
   // 세션을 누르고 들어올때 작동 
@@ -128,10 +126,11 @@ const contentList = ref<ChatArea[]>([])
 
 
 // 클라입력 직후에 바로 ai 답변대기 표시를 하고 그 다음에 socket으로 답변을 받는다.
-const callLlama = async() => {
+const callLlama = async(say: string) => {
+  fatchInput.value = say
   contentList.value.push({
     component: ChatClient,
-    saying: userInput.value,
+    saying: say,
   })
 
   word.value = ''

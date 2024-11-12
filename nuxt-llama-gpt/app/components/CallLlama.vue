@@ -38,15 +38,14 @@ import { CustomHttpCode } from '~/common/custom-http-code';
 import { useTrigger } from '~/stores/useTrigger';
 
 const emit = defineEmits<{
-  (e: 'sendMessage'): void
+  (e: 'sendMessage', userInput: string): void
 }>()
 const id = useId()
-
-const userInput = defineModel()
+const userInput = ref()
 
 const emitInput = () => {
-  emit('sendMessage')
-  userInput.value = '' // 초기화를 여기서..???
+  emit('sendMessage', userInput.value)
+  userInput.value = ''
 }
 
 const handleKeydown = async(event: KeyboardEvent) => {

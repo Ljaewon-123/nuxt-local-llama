@@ -78,7 +78,7 @@ export default defineEventHandler(async(event) => {
   }
   catch(e){
     console.error('historyModel 저장실패', e)
-    throw Error('Chat Save Fail')
+    throw Error('historyModel Save Fail')
   }
   
   chatSession?.histories.push(historyModel._id)
@@ -89,7 +89,7 @@ export default defineEventHandler(async(event) => {
   }
   catch(e){
     console.error('chatSession 저장실패', e)
-    throw Error('Chat Save Fail')
+    throw Error('chatSession Save Fail')
   }
 
   console.log('success text')
