@@ -18,6 +18,13 @@
     <v-row justify="center">
       <v-col cols="8">
         <CallLlama @sendMessage="callLlama"/>
+        <v-fab
+          @click="moveBottom"
+          :active="windowScrollY == 0 ? false : true"
+          style="left: 62px;"
+          icon="mdi-arrow-down-thick"
+          absolute
+        ></v-fab>
       </v-col>
     </v-row>
   </v-bottom-navigation>
@@ -26,12 +33,6 @@
 </template>
 
 <script setup lang="ts">
-
-/**
- * 1. 클릭해서 넘어올때
- * 2. 인덱스에서 세션만들고 넘어올때 
- */
-
 import type { DefineComponent } from 'vue';
 import { CustomHttpCode } from '~/common/custom-http-code';
 import { useHelper } from '~/stores/useHelper';
@@ -57,6 +58,8 @@ const { $socket } = storeToRefs(socket)
 const goTo = useGoTo()
 const chatAreaEl = ref()
 const { height } = useElementSize(chatAreaEl)
+const { y: windowScrollY } = useWindowScroll()
+
 
 const word = ref()
 const fatchInput = ref()
@@ -156,6 +159,9 @@ const isLastComponent = (index: number) => {
   return index === contentList.value.length - 1
 }
 
+const moveBottom = () => {
+  goTo(height.value)
+}
 </script>
 
 <style lang="css" scoped>
