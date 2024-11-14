@@ -9,7 +9,7 @@ export default defineEventHandler( async(event) => {
 
   try{
     const chat = await ChatSessionModel.findOne({ _id: params.id }).populate('histories')
-    return chat?.histories
+    return { histories: chat?.histories, title: chat?.title }
   }
   catch(e){
     console.log(e)

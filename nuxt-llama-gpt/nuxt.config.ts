@@ -54,6 +54,17 @@ export default defineNuxtConfig({
       },
     },
   },
+  app:{
+    head: {
+      title: "Llama chat gpt",
+      meta: [
+        { name: 'description', content: "meta-llama-gpt" }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/two-llama.svg' }
+      ]
+    }
+  },
   runtimeConfig:{
     dburl: process.env.DATABASE_URL,
     dbName: process.env.DBNAME,

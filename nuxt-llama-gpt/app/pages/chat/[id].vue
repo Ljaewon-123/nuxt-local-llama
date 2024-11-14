@@ -46,7 +46,7 @@ const ChatLlama = markRaw(defineAsyncComponent(() =>
 type ChatArea = { component: DefineComponent<{}, {}, any>, saying?: string, loading?: boolean }
 
 const route = useRoute()
-const { data, error, execute } = useFetch<Chat[]>(`/api/chat-sssion/${route.params.id}`)
+const { data, error, execute } = useFetch<{ histories: Chat[], title: string }>(`/api/chat-sssion/${route.params.id}`)
 await execute() // 솔직히 이해안되네 워닝은 
 console.log(data.value)
 
@@ -104,8 +104,13 @@ onMounted(async () => {
 const restoreChatHistory = () => {
   if(!data.value) return 
   
+  // 이런곳에 있어도 되나. 워닝도 없네.
+  useHead({
+    title: data.value.title
+  })
+
   // 기존 chat세션에 남아있는 히스토리 가져와서 배치해줌 
-  data.value.forEach(history => {
+  data.value.histories.forEach(history => {
     history.messages.forEach(message => {
       if (message.type === 'user') {
         contentList.value.push({
