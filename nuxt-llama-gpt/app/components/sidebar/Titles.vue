@@ -1,5 +1,24 @@
 <template>
-  <div  >
+  <v-infinite-scroll class="titles" @load="load" >
+    <template #error="{ props }">
+      <v-alert type="error">
+        <div class="d-flex justify-space-between align-center">
+          Something went wrong...
+          <v-btn
+            color="white"
+            size="small"
+            variant="outlined"
+            v-bind="props"
+          >
+            Retry
+          </v-btn>
+        </div>
+      </v-alert>
+    </template>
+    <template #empty>
+      <v-alert type="info">No more items!</v-alert>
+    </template>
+    <v-btn @click="load">asdf</v-btn>
     <!-- :to="'/chat/' + doc._id" -->
     <v-list class="px-4" >
       <div v-for="docObject, key, index in data" :key="key">
@@ -85,11 +104,12 @@
                 variant="underlined"
                 append-inner-icon="mdi-arrow-right-circle"
               ></v-text-field> -->
-  </div>
+  </v-infinite-scroll>
 </template>
 
 <script setup lang="ts">
 import { useTrigger } from '~/stores/useTrigger';
+
 interface TitleType {
   _id: string
   title: string
@@ -98,15 +118,17 @@ interface TitleType {
 }
 
 // 이거 맞나 모르겠네... 이거안쓰면 hydrate때문에 워닝뜨긴하는데 
-const originTitleData = useState<TitleType[]>(('title') ,()=> [])
-const { data, error, refresh } = await useFetch('/api/title',{
+const originTitleData = useState<TitleType[]>(('title') ,() => [])
+const currentPage = ref(1)
+const { data, error, refresh } = await useFetch(() => `/api/title/${currentPage.value}`,{
   deep :false,
   transform: (data:TitleType[]) => {
-    originTitleData.value = data
-    // data.forEach( da => da['rename'] = false)
+    if(!data) throw Error('error')
+    originTitleData.value.push(...data)
+    
     const dateGrouper = new DateGrouper();
-    return dateGrouper.splitTitlesByDate(data);
-  }
+    return dateGrouper.splitTitlesByDate(originTitleData.value);
+  },
 })
 
 const changeTitle = ref()
@@ -131,6 +153,7 @@ const route = useRoute()
 watch( trigger, async() => {
   await refresh()
 
+  // rename 혹은 delete후에 현재 세션id를 가진 라우터라면 index페이지로 이동
   const targetTitle = originTitleData.value.find(titleObj => titleObj._id == route.params.id);
   if (!targetTitle) {
     navigateTo('/');
@@ -180,5 +203,18 @@ const compare = (index:number, parent:number) => {
   }
   return true
 }
+
+const load = async({ done }: any) => {
+  currentPage.value++
+  console.log('얼마나 많이뜨냐', currentPage.value)
+  await refresh()
+
+  if(error.value){
+    throw done('empty')
+  }
+
+  done('ok')
+
+};
 
 </script>

@@ -29,12 +29,12 @@ export default defineEventHandler(async(event) => {
   const question = body.message
   console.log('question user: ', question)
 
-  // _id 유니크라서 email없어도 괜찮을거라는 판단.
-  // lean을 사용하면 mongo docs가 아니고 lean을 사용하지않으면 setChatHistory에 안들어간다 문서에는 js객체를 문서로 만드는 법은 없는거같은데 
+  // ai에게 이전대화를 보여주기위한 문서 
   const chatRestore = await ChatSessionModel.findOne({ _id: params.id })
                                             .populate('histories')
                                             .lean();
 
+  // 저장할때 사용하는 모델변수 
   const chatSession = await ChatSessionModel.findOne({ _id: params.id })
 
   const restoreHistory = chatRestore?.histories
