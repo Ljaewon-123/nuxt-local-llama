@@ -1,7 +1,7 @@
 import UsersModel from "~~/server/models/Users"
 
 export default defineEventHandler( async(event) => {
-  const PER_PAGE = 10
+  const PER_PAGE = 50
   const params = getRouterParams(event)
   const currentPage = Number(params.id)
   if(Number.isNaN(currentPage)) {

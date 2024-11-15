@@ -154,7 +154,10 @@ const listId = ref()
 const parentId = ref() // 쓰읍...
 const route = useRoute()
 
+// 최근수정 리스트 가져오기 위한 트리거
 watch( trigger, async() => {
+  originTitleData.value = []
+  currentPage.value = 1
   await refresh()
 
   // rename 혹은 delete후에 현재 세션id를 가진 라우터라면 index페이지로 이동
@@ -219,7 +222,6 @@ const load = async({ done }: any) => {
   }
 
   done('ok')
-
 };
 
 </script>
