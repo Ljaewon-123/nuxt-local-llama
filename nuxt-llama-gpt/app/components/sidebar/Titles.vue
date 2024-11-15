@@ -18,7 +18,6 @@
     <template #empty>
       <v-alert type="info">No more items!</v-alert>
     </template>
-    <v-btn @click="load">asdf</v-btn>
     <!-- :to="'/chat/' + doc._id" -->
     <v-list class="px-4" >
       <div v-for="docObject, key, index in data" :key="key">
@@ -114,19 +113,24 @@ interface TitleType {
   _id: string
   title: string
   updatedAt: string // Date 
-  // rename: boolean
 }
 
 // 이거 맞나 모르겠네... 이거안쓰면 hydrate때문에 워닝뜨긴하는데 
 const originTitleData = useState<TitleType[]>(('title') ,() => [])
 const currentPage = ref(1)
+const isLast = ref(false)
 const { data, error, refresh } = await useFetch(() => `/api/title/${currentPage.value}`,{
   deep :false,
-  transform: (data:TitleType[]) => {
-    if(!data) throw Error('error')
-    originTitleData.value.push(...data)
-    
+  transform: (data:TitleType[] | { last: boolean }) => {
     const dateGrouper = new DateGrouper();
+
+    if ('last' in data) {
+      isLast.value = true
+      return dateGrouper.splitTitlesByDate(originTitleData.value);
+    }
+
+    isLast.value = false
+    originTitleData.value.push(...data)
     return dateGrouper.splitTitlesByDate(originTitleData.value);
   },
 })
@@ -205,12 +209,13 @@ const compare = (index:number, parent:number) => {
 }
 
 const load = async({ done }: any) => {
+  if(isLast.value) return done('empty')
+
   currentPage.value++
-  console.log('얼마나 많이뜨냐', currentPage.value)
   await refresh()
 
   if(error.value){
-    throw done('empty')
+    throw done('error')
   }
 
   done('ok')

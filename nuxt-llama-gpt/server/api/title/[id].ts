@@ -28,10 +28,12 @@ export default defineEventHandler( async(event) => {
 
   if(user.chatSession.length == 0) {
     console.error("No Content")
-    throw createError({
-      statusCode: 204,
-      statusMessage: "No Content"
-    })
+
+    return { last: true }
+    // throw createError({
+    //   statusCode: 204,
+    //   statusMessage: "No Content"
+    // })
   }
 
   console.log('load title', params, )
