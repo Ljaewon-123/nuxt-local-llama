@@ -37,6 +37,7 @@ import { useHelper } from '~/stores/useHelper';
 
 const { openModal, closeModal } = useGlobalDialog()
 const { changeTrigger } = useTrigger()
+const { openSnack } = useSnack()
 const helper = useHelper()
 const { indexSay } = storeToRefs(helper)
 const userInput = ref()
@@ -53,8 +54,9 @@ const { data: titleData ,error: titleError, execute: titleExecute, status } = us
     const { openModal } = useGlobalDialog()
     
     if(status == CustomHttpCode.LoginSessionInvailed) {
-      openModal()
+      return openModal()
     }
+
   }
 })
 
@@ -66,7 +68,10 @@ const createText = async(say: string) => {
 
   await titleExecute()
 
-  if(titleError.value) throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
+  if(titleError.value) {
+    openSnack(500, 'Server Error') // createError필요?
+    throw createError({statusCode: 500, message: 'Server Error'})  // 여기서 크리에트는?
+  }
 
   changeTrigger() // 사이드바에 타이틀 재조정 하는데 사용여기서는 
   console.log('AI 컴퓨터 메모리 에러만 아니면 정상동작한다.')

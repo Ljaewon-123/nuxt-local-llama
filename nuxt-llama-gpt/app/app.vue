@@ -16,6 +16,21 @@
       <component :is="type == 'auth' ? AuthTimeoutModal : EntireLoading" v-model="dialog" />
     </v-dialog>
 
+    <v-snackbar 
+      v-model="snackbar" 
+      timer="success"
+      timeout="8000"
+      color="blue-grey"
+    >
+      {{ text }}
+
+      <template #actions>
+        <v-btn color="red" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
   </v-app>
 </template>
 
@@ -32,6 +47,7 @@ const colorMode = useColorMode()
 const cookieTheme = useCookie<Theme>('color-scheme')
 
 const { dialog, type } = storeToRefs(useGlobalDialog())
+const { snackbar, text } = storeToRefs(useSnack())
 
 onMounted(() => {
   const initWath = watch(colorMode ,(val) => {

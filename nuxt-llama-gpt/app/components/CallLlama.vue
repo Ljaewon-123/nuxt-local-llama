@@ -34,9 +34,6 @@ class="d-flex align-center pa-3 border-sm"
 </template>
 
 <script setup lang="ts">
-import { CustomHttpCode } from '~/common/custom-http-code';
-import { useTrigger } from '~/stores/useTrigger';
-
 const emit = defineEmits<{
   (e: 'sendMessage', userInput: string): void
 }>()

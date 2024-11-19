@@ -155,6 +155,7 @@ const changeList = ref(true)
 const listId = ref()
 const parentId = ref() // 쓰읍...
 const route = useRoute()
+const { openSnack } = useSnack()
 
 // 최근수정 리스트 가져오기 위한 트리거
 watch( trigger, async() => {
@@ -183,9 +184,10 @@ const deleteChatSession = async(id:string) => {
   }
   catch (e: any){
     console.log(e.data.message)
+    openSnack(e.data.code, e.data.message)
   }
 
-  // 에러 스낵바 필요 이게 첫번째 필요성인거같은데 
+  // 에러 스낵바 필요 이게 첫번째 필요성인거같은데 => catch에 만듬
 }
 const rename = async() => {
   await patchExecute()
