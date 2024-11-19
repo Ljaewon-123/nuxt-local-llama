@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     "@pinia/nuxt",
     "@vueuse/nuxt",
+    "@vite-pwa/nuxt",
   ],
   vuetify:{
     vuetifyOptions:{
@@ -56,7 +57,7 @@ export default defineNuxtConfig({
   },
   app:{
     head: {
-      title: "Llama chat gpt",
+      title: "Llama chat GPT",
       meta: [
         { name: 'description', content: "meta-llama-gpt" }
       ],
@@ -73,5 +74,67 @@ export default defineNuxtConfig({
       encryptionKey: process.env.ENCRYPTION_KEY,
       rootPath: process.cwd(),
     }
+  },
+  pwa:{
+    strategies: 'injectManifest',
+    registerType: 'autoUpdate',
+    srcDir: 'service-worker',
+    filename: 'sw.ts',
+    manifest:{
+      name: 'LLama-GPT',
+      short_name:'chat-gpt',
+      display: "standalone",
+      scope: "/",
+      description: "LLama Icon.",
+      background_color: "#ffffff",
+      theme_color: "#000000",
+      icons:[
+        { 
+          src: "/signin-llama.svg", 
+          sizes: "any", 
+          type: "image/svg+xml", 
+          purpose: "any" 
+        }
+      ],
+      screenshots:[
+        {
+          src: "/main_wide.png",
+          sizes: "1402x870",
+          type: "image/png", 
+          form_factor: "wide"
+        },
+        {
+          src: "/login_wide.png",
+          sizes: "1022x866",
+          type: "image/png", 
+          form_factor: "wide"
+        },
+        {
+          src: "/login_narrow.png",
+          sizes: "476x435",
+          type: "image/png", 
+          form_factor: "narrow"
+        },
+      ]
+    },
+    workbox: {
+      globPatterns: [ "**/*.{js,css,html,pdf}"],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    client: {
+      installPrompt: true,
+      // you don't need to include this: only for testing purposes
+      // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
+      periodicSyncForUpdates: 20,
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallback: '/',
+      navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
+    },
   },
 })

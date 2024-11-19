@@ -12,6 +12,7 @@
   "dependencies": {
     "@langchain/community": "^0.3.3",
     "@types/crypto-js": "^4.2.2",
+    "@vite-pwa/nuxt": "^0.10.6",
     "crypto-js": "^4.2.0",
     "dompurify": "^3.1.7",
     "marked": "^14.1.2",
