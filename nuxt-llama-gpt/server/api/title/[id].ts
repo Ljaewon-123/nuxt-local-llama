@@ -11,6 +11,7 @@ export default defineEventHandler( async(event) => {
       statusMessage: "Bad Request"
     })
   }
+
   const currentSession = await PageAuth.getCurrentSession(event)
   const user = await UsersModel.findOne({
     email: currentSession.data.email,
@@ -24,6 +25,7 @@ export default defineEventHandler( async(event) => {
         limit: PER_PAGE 
       }
     })
+    
   if(!user) throw Error('User not found')
 
   if(user.chatSession.length == 0) {

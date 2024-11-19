@@ -117,10 +117,11 @@ interface TitleType {
 
 // 이거 맞나 모르겠네... 이거안쓰면 hydrate때문에 워닝뜨긴하는데 
 const originTitleData = useState<TitleType[]>(('title') ,() => [])
-const currentPage = ref(1)
+const currentPage = ref(0)
 const isLast = ref(false)
 const { data, error, refresh } = await useFetch(() => `/api/title/${currentPage.value}`,{
   deep :false,
+  immediate: false,
   transform: (data:TitleType[] | { last: boolean }) => {
     const dateGrouper = new DateGrouper();
 
@@ -133,6 +134,7 @@ const { data, error, refresh } = await useFetch(() => `/api/title/${currentPage.
     originTitleData.value.push(...data)
     return dateGrouper.splitTitlesByDate(originTitleData.value);
   },
+  // onResponse:() => currentPage.value++
 })
 
 const changeTitle = ref()
@@ -212,6 +214,7 @@ const compare = (index:number, parent:number) => {
 }
 
 const load = async({ done }: any) => {
+  // if(!data.value) return
   if(isLast.value) return done('empty')
 
   currentPage.value++
