@@ -3,7 +3,7 @@
 
   <v-main>
     <div id="welcome-text" class="px-8 py-8" >
-      <p style="font-weight: 600; font-size: 5rem;">
+      <p style="font-weight: 600;" :style="{ 'font-size': downDisplay }">
         Welcome 
         <span style="color:#4070F4">
           Hello World
@@ -86,6 +86,9 @@ watchEffect(() => {
   }
 })
 
+
+const { smAndUp } = useDisplay()
+const downDisplay = computed(() => !smAndUp.value ? '2.5rem' : '5rem')
 </script>
 
 <style lang="css" scoped>

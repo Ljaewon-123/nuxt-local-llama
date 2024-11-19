@@ -28,6 +28,8 @@ const DEFAULT_SEQ = 4000
 const text = ref('')
 const seq = computed(() => props.texts.length)
 const timeoutId = ref()
+const { smAndUp } = useDisplay()
+const downDisplay = computed(() => !smAndUp.value ? '1.5rem' : '3rem')
 
 onMounted(() => {
   
@@ -55,7 +57,7 @@ onUnmounted(() => clearInterval(timeoutId.value))
   color: v-bind(accentColor);
 }
 .font-setup{
-  font-size: 3rem;
+  font-size: v-bind(downDisplay);
   font-weight: 600;
 }
 .container .text.first-text{

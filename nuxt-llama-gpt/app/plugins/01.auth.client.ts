@@ -19,6 +19,7 @@ export default defineNuxtPlugin(() => {
     // 맨처음켜질때 여전히 남아있다....
     if(error.value?.statusCode == CustomHttpCode.LoginSessionInvailed) {
       setTimeout(() => dialog.value = true, 500)
+      return
     }
 
     openSnack(error.value?.statusCode, error.value?.statusMessage)
