@@ -15,9 +15,9 @@
         </div>
       </v-alert>
     </template>
-    <template #empty>
+    <!-- <template #empty>
       <v-alert type="info">No more items!</v-alert>
-    </template>
+    </template> -->
     <!-- :to="'/chat/' + doc._id" -->
     <v-list class="px-4" >
       <div v-for="docObject, key, index in data" :key="key">
