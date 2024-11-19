@@ -27,12 +27,18 @@ export default defineEventHandler( async(event) => {
   }
 
   const session = await PageAuth.createSession(event)
+  const userInfo = {
+    id: session.id,
+    data:{
+      email: user.email,
+      userName: user.userName
+    }
+  }
   await session.update({
-    email: user.email,
     userName: user.userName
   });
   const redis = useRedis()
-  await redis.setItem(session.id ?? 'null', session, sessionTtl)
+  await redis.setItem(session.id ?? 'null', userInfo, sessionTtl)
 
   return true
 

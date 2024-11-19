@@ -5,7 +5,7 @@ export default defineEventHandler( async event => {
   const config = useRuntimeConfig(event)
 
   const session = await PageAuth.createSession(event)
-  console.log(session.id, 'mobile!')
+
   if(!session.id) throw 'User not login'
 
   const verification = await PageAuth.verification(session.id)
@@ -16,6 +16,6 @@ export default defineEventHandler( async event => {
   }
 
   // 갱신
-  await PageAuth.refreshSession(session as any)
+  await PageAuth.refreshSession(verification as any)
 
 })
