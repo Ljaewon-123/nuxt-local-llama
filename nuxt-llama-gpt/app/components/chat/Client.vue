@@ -1,6 +1,6 @@
 <template>
 <v-row justify="end">
-  <v-col cols="7">
+  <v-col sm="10" cols="7">
     <v-card class="pa-4" rounded="lg">
       <div class="pre-line-text">
         {{ props.saying }}
