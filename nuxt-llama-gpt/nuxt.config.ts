@@ -72,7 +72,7 @@ export default defineNuxtConfig({
     llamaName: "Meta-Llama-3.1-8B-Instruct.Q6_K",
     public:{
       encryptionKey: process.env.ENCRYPTION_KEY,
-      rootPath: process.cwd(),
+      rootPath: process.env.NODE_ENV === 'production' ? '' : process.cwd(),
     }
   },
   pwa:{

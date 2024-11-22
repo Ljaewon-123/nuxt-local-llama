@@ -1,8 +1,5 @@
 import path from "path";
-import {GeneralChatWrapper, getLlama, LlamaChatSession} from "node-llama-cpp";
-import { io } from "~~/server/plugins/socket.io"
-import ChatHistoryModel from "~~/server/models/ChatHistory";
-import { AuthSession } from "../types/session.type";
+import { getLlama, LlamaChatSession} from "node-llama-cpp";
 import ChatSessionModel from "~~/server/models/ChatSession";
 import UsersModel from "~~/server/models/Users";
 
