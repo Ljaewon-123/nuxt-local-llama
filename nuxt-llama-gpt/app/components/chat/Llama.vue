@@ -10,7 +10,7 @@
       </template>
     </v-img>
   </v-avatar>
-  <v-col cols="9">
+  <v-col sm="12" cols="9">
     <div v-if="loading" >
       <LazyLoading :justify="'start'" />
     </div>

@@ -49,7 +49,7 @@
     <v-navigation-drawer
       v-model="drawer"
       persistent
-      permanent
+      disable-resize-watcher
     >
       <template #prepend>
         <div class="d-flex align-center justify-space-between" style="height: 64px;">

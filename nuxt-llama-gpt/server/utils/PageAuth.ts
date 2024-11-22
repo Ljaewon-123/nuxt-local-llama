@@ -22,13 +22,23 @@ export class PageAuth {
   }
 
   async verification(sessionId: string){
-    return await this.redis.getItem(sessionId)
+    return await this.redis.getItem(sessionId) // has가 안된다.... 
   }
+
+    /** The function is the same as the [verification] function */
+    async getSession(sessionId: string){
+      return await this.redis.getItem(sessionId) // equal verification function
+    }
   
+  /** 
+   * Session ttl initialization use setItem 
+   * @warning Be careful when using it because it is virtually the same setItem.
+   */
   async refreshSession(session: Session){
     await this.redis.setItem(session.id, session, sessionTtl) 
   }
 
+  /** Get a session that has completed exception handling and type inference */
   async getCurrentSession(event: any): Promise<AuthSession> {
     const authSession = await this.createSession(event)
     
@@ -47,5 +57,5 @@ export class PageAuth {
   }
 
 }
-// 생성자가 없으면 이런식으로 활용이 가능하다
+
 export default new PageAuth()
