@@ -1,1 +1,1 @@
-export default { ttl: 60 * 15* 15 }
+export default { ttl: 3 * 24 * 60 * 60 }

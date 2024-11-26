@@ -11,6 +11,7 @@ export class PageAuth {
   private redis = useRedis()
 
   async createSession(event: any ){
+    /** 보안 강화 하려면 password env로 */
     return await useSession(event, {
       password: "80d42cfb-1cd2-462c-8f17-e3237d9027e9",
       cookie: {
