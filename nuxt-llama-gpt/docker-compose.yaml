@@ -5,6 +5,8 @@ services:
     build: ./
     ports:
       - '3000:3000'
+    volumes:
+    - /home/ubuntu/local-ai:/app/local-ai # 호스트 디렉토리를 컨테이너로 마운트
 
   nginx:
     image: nginx:alpine
