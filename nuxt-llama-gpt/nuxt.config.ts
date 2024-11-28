@@ -75,7 +75,7 @@ export default defineNuxtConfig({
       rootPath: process.env.NODE_ENV === 'production' ? process.env.AI_PATH : process.cwd(),
     }
   },
-  pwa:{
+  pwa:{ 
     strategies: 'injectManifest',
     registerType: 'autoUpdate',
     srcDir: 'service-worker',

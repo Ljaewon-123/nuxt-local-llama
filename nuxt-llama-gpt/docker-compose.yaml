@@ -8,6 +8,13 @@ services:
     volumes:
       - redis-data:/data
 
+  mongodb:
+    image: 'mongo'
+    volumes: 
+      - mongodb-data:/data/db
+    env_file:
+    - ./.env
+
   local-llama:
     build: ./
     ports:
@@ -16,6 +23,7 @@ services:
       - /home/ubuntu/local-ai:/app/local-ai # 호스트 디렉토리를 컨테이너로 마운트
     depends_on:
       - redis
+      - mongodb
 
   nginx:
     image: nginx:alpine
@@ -28,3 +36,4 @@ services:
 
 volumes:
   redis-data:
+  mongodb-data:
