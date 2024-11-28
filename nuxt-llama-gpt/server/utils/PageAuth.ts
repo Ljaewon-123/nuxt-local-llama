@@ -16,7 +16,7 @@ export class PageAuth {
       password: "80d42cfb-1cd2-462c-8f17-e3237d9027e9",
       cookie: {
         sameSite: isProd ? "strict" : false, // 개발: false, 배포: Lax
-        secure: isProd,                  // 배포: true, 개발: false
+        secure: false, // https일때 이거 켜줌: isProd,                  // 배포: true, 개발: false
         httpOnly: isProd,                // 배포: true
       },
     });
