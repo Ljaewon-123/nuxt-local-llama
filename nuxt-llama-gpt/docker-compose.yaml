@@ -1,12 +1,21 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+
   local-llama:
     build: ./
     ports:
       - '3000:3000'
     volumes:
-    - /home/ubuntu/local-ai:/app/local-ai # 호스트 디렉토리를 컨테이너로 마운트
+      - /home/ubuntu/local-ai:/app/local-ai # 호스트 디렉토리를 컨테이너로 마운트
+    depends_on:
+      - redis
 
   nginx:
     image: nginx:alpine
@@ -16,3 +25,6 @@ services:
       - '80:80'
     depends_on:
       - local-llama
+
+volumes:
+  redis-data:
