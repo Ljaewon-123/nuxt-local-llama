@@ -8,8 +8,6 @@ export default async() => {
   try{
     const dbOptions = {
       dbName: config.dbName,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     }
     await mongoose.connect( config.dburl, dbOptions)
     console.log('connected successfully...')
