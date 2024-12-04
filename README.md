@@ -1,7 +1,7 @@
 # nuxt-local-llama
 nuxt-local-llama
 
-- Meta-llama.3.2 사용
+- Meta-Llama-3.1-8B-Instruct.Q6_K 사용
 - Node-llama-cpp 사용 
 
 ## Local-AI 를 사용하는 repo 
@@ -22,17 +22,22 @@ nuxt-local-llama
 > http2는 다른문서에 있다. 
 
 https 연결된 모습
-![alt text](image.png)
+![alt text](readme-assets/image.png)
 
 # 주요 기능
 ## GIF
+> 하드웨어 이슈로 로딩이 오래걸려서 중간중간 스킵했다.
+### Chat-GPT
+![alt text](readme-assets/main.gif)
 
+### 방금 대화 기억 확인
+![alt text](readme-assets/again.gif)
 
 # PWA
 
 ### 데스크탑
 
-![alt text](image-1.png)
+![alt text](readme-assets/image-1.png)
 
 
 # 모바일 화면 
