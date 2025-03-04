@@ -51,7 +51,7 @@ export default defineNuxtConfig({
     storage: {
       redis: {
         driver: "redis",
-        url: "redis://redis:6379",
+        url: "redis://localhost:6379",
       },
     },
   },
