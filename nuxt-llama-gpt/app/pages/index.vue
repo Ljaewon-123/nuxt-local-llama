@@ -48,7 +48,7 @@ const { data: titleData ,error: titleError, execute: titleExecute, status } = us
   body:{
     message: userInput
   },
-  transform: title => title ?? 'New Chat',
+  default:() => 'New Chat', // transform: title => title ?? 'New Chat' 흠 
   onResponseError: ({ request, response, options }) => {
     const { status } = response
     const { openModal } = useGlobalDialog()

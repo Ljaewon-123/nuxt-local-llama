@@ -119,6 +119,8 @@ interface TitleType {
 const originTitleData = useState<TitleType[]>(('title') ,() => [])
 const currentPage = ref(0)
 const isLast = ref(false)
+
+// lazy옵션을키고 transform대신 default옵션을 사용하면??
 const { data, error, refresh } = await useFetch(() => `/api/title/${currentPage.value}`,{
   deep :false,
   immediate: false,
